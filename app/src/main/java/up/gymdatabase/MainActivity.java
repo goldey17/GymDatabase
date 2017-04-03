@@ -1,18 +1,15 @@
 package up.gymdatabase;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
 /**
  * The main header of the app. This contains the menu bar and the fragment for all the other pages
- * Created by goldey17 on 4/3/2017.
+ * Created by Jordan Goldey on 4/3/2017.
  */
 public class MainActivity extends AppCompatActivity {
 

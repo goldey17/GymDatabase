@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Created by goldey17 on 4/3/2017.
+ * Created by Jordan Goldey on 4/3/2017.
  */
 public class RentEquipment extends Fragment implements View.OnClickListener {
 

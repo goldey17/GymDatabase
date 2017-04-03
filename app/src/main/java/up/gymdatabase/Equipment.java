@@ -5,16 +5,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import org.w3c.dom.Text;
 
 /**
- * Created by goldey17 on 4/3/2017.
+ * Created by Jordan Goldey on 4/3/2017.
  */
 
 public class Equipment extends Fragment implements View.OnClickListener {
     //All the stuff on the screen
+
+    //To Access the Database
+    DatabaseHelper mDbHelper = new DatabaseHelper(getContext());
 
     @Override
     /*
@@ -39,6 +40,8 @@ public class Equipment extends Fragment implements View.OnClickListener {
      */
     public void onViewCreated(View view, Bundle savedInstanceState) {
         //setup the widgets on the screen
+
+
 
 
 
