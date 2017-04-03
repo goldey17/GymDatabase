@@ -1,5 +1,6 @@
 package up.gymdatabase;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,15 @@ import android.view.MenuItem;
  * Created by Jordan Goldey on 4/3/2017.
  */
 public class MainActivity extends AppCompatActivity {
+
+    //To Access the Database
+    DatabaseHelper mDbHelper = new DatabaseHelper(App.getContext());
+
+    // Gets the data repository in write mode
+    SQLiteDatabase dbWrite = mDbHelper.getWritableDatabase();
+
+    // Gets the data repository in read mode
+    SQLiteDatabase dbRead = mDbHelper.getReadableDatabase();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

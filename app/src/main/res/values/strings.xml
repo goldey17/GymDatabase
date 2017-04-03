@@ -6,4 +6,8 @@
     <string name="action_equipment">Equipment</string>
     <string name="action_rent_equipment">Rent Equipment</string>
     <string name="action_sign_up_for_class">Sign-up for a Class</string>
+    <string name="equipment_id">Equipment ID</string>
+    <string name="equipment_type">Equipment Type</string>
+    <string name="equipment_quantity">Equipment Quantity</string>
+    <string name="equipment_rental">Equipment Rental Cost</string>
 </resources>
