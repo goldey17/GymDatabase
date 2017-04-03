@@ -10,4 +10,12 @@
     <string name="equipment_type">Equipment Type</string>
     <string name="equipment_quantity">Equipment Quantity</string>
     <string name="equipment_rental">Equipment Rental Cost</string>
+    <string name="sort_by_type_asc">Sort by Type (ASC)</string>
+    <string name="sort_by_type_dsc">Sort by Type (DESC)</string>
+    <string name="sort_by_id_asc">Sort by ID (ASC)</string>
+    <string name="sort_by_id_dsc">Sort by ID (DESC)</string>
+    <string name="sort_by_quan_asc">Sort by Quantity (ASC)</string>
+    <string name="sort_by_quan_dsc">Sort by Quantity (DESC)</string>
+    <string name="sort_by_cost_asc">Sort by Rental Cost (ASC)</string>
+    <string name="sort_by_cost_dsc">Sort by Rental Cost (DESC)</string>
 </resources>
