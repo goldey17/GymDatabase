@@ -1,0 +1,35 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="up.gymdatabase.MainActivity">
+    <item
+        android:id="@+id/action_account"
+        android:orderInCategory="100"
+        android:title="@string/action_account"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_classes"
+        android:orderInCategory="100"
+        android:title="@string/action_classes"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_staff"
+        android:orderInCategory="100"
+        android:title="@string/action_staff"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_equipment"
+        android:orderInCategory="100"
+        android:title="@string/action_equipment"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_sign_up_for_class"
+        android:orderInCategory="100"
+        android:title="@string/action_sign_up_for_class"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_rent_equipment"
+        android:orderInCategory="100"
+        android:title="@string/action_rent_equipment"
+        app:showAsAction="never" />
+</menu>

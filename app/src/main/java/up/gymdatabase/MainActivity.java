@@ -1,0 +1,149 @@
+package up.gymdatabase;
+
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
+
+/**
+ * The main header of the app. This contains the menu bar and the fragment for all the other pages
+ * Created by goldey17 on 4/3/2017.
+ */
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        // Check that the activity is using the layout version with
+        // the fragment_container FrameLayout
+        if (findViewById(R.id.fragment_container) != null) {
+
+            // However, if we're being restored from a previous state,
+            // then we don't need to do anything and should return or else
+            // we could end up with overlapping fragments.
+            if (savedInstanceState != null) {
+                return;
+            }
+
+            // Create a new Fragment to be placed in the activity layout
+            MyAccount account = new MyAccount();
+
+            // In case this activity was started with special instructions from an
+            // Intent, pass the Intent's extras to the fragment as arguments
+            account.setArguments(getIntent().getExtras());
+
+            // Add the fragment to the 'fragment_container' FrameLayout
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, account).commit();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    /*
+     * Handles the menu bar and replaces the fragment with the certain page
+     */
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_account:
+                // Create fragment and give it an argument specifying the article it should show
+                MyAccount account = new MyAccount();
+                Bundle args1 = new Bundle();
+                account.setArguments(args1);
+
+                FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                transaction1.replace(R.id.fragment_container, account, "My Frag");
+
+                // Commit the transaction
+                transaction1.commit();
+                break;
+            case R.id.action_classes:
+                // Create fragment and give it an argument specifying the article it should show
+                Classes classes = new Classes();
+                Bundle args2 = new Bundle();
+                classes.setArguments(args2);
+
+                FragmentTransaction transaction2 = getSupportFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                transaction2.replace(R.id.fragment_container, classes, "My Frag");
+
+                // Commit the transaction
+                transaction2.commit();
+                break;
+            case R.id.action_equipment:
+                // Create fragment and give it an argument specifying the article it should show
+                Equipment equip = new Equipment();
+                Bundle args3 = new Bundle();
+                equip.setArguments(args3);
+
+                FragmentTransaction transaction3 = getSupportFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                transaction3.replace(R.id.fragment_container, equip, "My Frag");
+
+                // Commit the transaction
+                transaction3.commit();
+                break;
+            case R.id.action_rent_equipment:
+                // Create fragment and give it an argument specifying the article it should show
+                RentEquipment rent = new RentEquipment();
+                Bundle args4 = new Bundle();
+                rent.setArguments(args4);
+
+                FragmentTransaction transaction4 = getSupportFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                transaction4.replace(R.id.fragment_container, rent, "My Frag");
+
+                // Commit the transaction
+                transaction4.commit();
+                break;
+            case R.id.action_sign_up_for_class:
+                // Create fragment and give it an argument specifying the article it should show
+                SignUpForClass sign = new SignUpForClass();
+                Bundle args5 = new Bundle();
+                sign.setArguments(args5);
+
+                FragmentTransaction transaction5 = getSupportFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                transaction5.replace(R.id.fragment_container, sign, "My Frag");
+
+                // Commit the transaction
+                transaction5.commit();
+                break;
+            case R.id.action_staff:
+                // Create fragment and give it an argument specifying the article it should show
+                Staff staff = new Staff();
+                Bundle args6 = new Bundle();
+                staff.setArguments(args6);
+
+                FragmentTransaction transaction6 = getSupportFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                transaction6.replace(R.id.fragment_container, staff, "My Frag");
+
+                // Commit the transaction
+                transaction6.commit();
+                break;
+        }
+        return true;
+    }
+}

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">GymDatabase</string>
+    <string name="action_account">My Account</string>
+    <string name="action_classes">Classes</string>
+    <string name="action_staff">Staff</string>
+    <string name="action_equipment">Equipment</string>
+    <string name="action_rent_equipment">Rent Equipment</string>
+    <string name="action_sign_up_for_class">Sign-up for a Class</string>
+</resources>
