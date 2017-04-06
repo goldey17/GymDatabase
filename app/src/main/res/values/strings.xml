@@ -18,4 +18,6 @@
     <string name="sort_by_quan_dsc">Sort by Quantity (DESC)</string>
     <string name="sort_by_cost_asc">Sort by Rental Cost (ASC)</string>
     <string name="sort_by_cost_dsc">Sort by Rental Cost (DESC)</string>
+    <string name="search">Search</string>
+    <string name="search_criteria">Enter a Word or Number to Search By</string>
 </resources>

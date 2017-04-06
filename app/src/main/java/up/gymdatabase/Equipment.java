@@ -6,16 +6,21 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The screen related to the equipment in the gym
  * Created by Jordan Goldey on 4/3/2017.
  */
-
 public class Equipment extends Fragment implements View.OnClickListener {
     //All the stuff on the screen
     TextView title;
@@ -25,6 +30,20 @@ public class Equipment extends Fragment implements View.OnClickListener {
     Button sortType;
     Button sortQuan;
     Button sortCost;
+    Button search;
+    EditText searchCrit;
+    Spinner searchDropdown;
+    Spinner extraSearchDropdown;
+
+    int dropdownSelection;
+    int extraDropdownSelection;
+    final int ID = 0;
+    final int TYPE = 1;
+    final int QUANTITY = 2;
+    final int RENTAL_COST = 3;
+    final int EQUAL_TO = 0;
+    final int LESS_THAN = 1;
+    final int GREATER_THAN = 2;
 
     //Get main so I can get the readable database
     MainActivity main;
@@ -64,6 +83,74 @@ public class Equipment extends Fragment implements View.OnClickListener {
         sortQuan.setOnClickListener(this);
         sortCost = (Button) getActivity().findViewById(R.id.sort_cost);
         sortCost.setOnClickListener(this);
+        search = (Button) getActivity().findViewById(R.id.search);
+        search.setOnClickListener(this);
+        searchCrit = (EditText) getActivity().findViewById(R.id.search_crit);
+        searchDropdown = (Spinner) getActivity().findViewById(R.id.search_dropdown);
+        searchDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
+                switch (position) {
+                    case ID:
+                        dropdownSelection = ID;
+                        extraSearchDropdown.setVisibility(View.VISIBLE);
+                        setExtraSpinnerToInt();
+                        break;
+                    case TYPE:
+                        dropdownSelection = TYPE;
+                        extraSearchDropdown.setVisibility(View.GONE);
+                        break;
+                    case QUANTITY:
+                        dropdownSelection = QUANTITY;
+                        extraSearchDropdown.setVisibility(View.VISIBLE);
+                        setExtraSpinnerToInt();
+                        break;
+                    case RENTAL_COST:
+                        dropdownSelection = RENTAL_COST;
+                        extraSearchDropdown.setVisibility(View.VISIBLE);
+                        setExtraSpinnerToInt();
+                        break;
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        extraSearchDropdown = (Spinner) getActivity().findViewById(R.id.extra_search_dropdown);
+        extraSearchDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
+                switch (position){
+                    case EQUAL_TO:
+                        extraDropdownSelection = EQUAL_TO;
+                        break;
+                    case LESS_THAN:
+                        extraDropdownSelection = LESS_THAN;
+                        break;
+                    case GREATER_THAN:
+                        extraDropdownSelection = GREATER_THAN;
+                        break;
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+        //Set up the search drop down
+        List<String> list = new ArrayList<>();
+        list.add("ID");
+        list.add("Type");
+        list.add("Quantity");
+        list.add("Rental Cost");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_item, list);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        searchDropdown.setAdapter(dataAdapter);
 
         //Set up main
         main = (MainActivity) getActivity();
@@ -222,6 +309,72 @@ public class Equipment extends Fragment implements View.OnClickListener {
                 redrawTable(cursor, true, true, true, true);
                 sortCost.setText(R.string.sort_by_cost_asc);
             }
+        }else if (view == search){
+            String selection = null;
+            String[] selectionArgs = null;
+            switch (dropdownSelection){
+                case ID:
+                    switch (extraDropdownSelection){
+                        case EQUAL_TO:
+                            selection = Database.Equipment.COLUMN_NAME_Equipment_ID + " = ?";
+                            break;
+                        case LESS_THAN:
+                            selection = Database.Equipment.COLUMN_NAME_Equipment_ID + " < ?";
+                            break;
+                        case GREATER_THAN:
+                            selection = Database.Equipment.COLUMN_NAME_Equipment_ID + " > ?";
+                            break;
+                    }
+                    String[] args = { searchCrit.getText().toString() };
+                    selectionArgs = args;
+                    break;
+                case TYPE:
+                    selection = Database.Equipment.COLUMN_NAME_Equipment_Type + " = ?";
+                    String[] args1 = { searchCrit.getText().toString() };
+                    selectionArgs = args1;
+                    break;
+                case QUANTITY:
+                    switch (extraDropdownSelection){
+                        case EQUAL_TO:
+                            selection = Database.Equipment.COLUMN_NAME_Equipment_Quantity + " = ?";
+                            break;
+                        case LESS_THAN:
+                            selection = Database.Equipment.COLUMN_NAME_Equipment_Quantity + " < ?";
+                            break;
+                        case GREATER_THAN:
+                            selection = Database.Equipment.COLUMN_NAME_Equipment_Quantity + " > ?";
+                            break;
+                    }
+                    String[] args2 = { searchCrit.getText().toString() };
+                    selectionArgs = args2;
+                    break;
+                case RENTAL_COST:
+                    switch (extraDropdownSelection){
+                        case EQUAL_TO:
+                            selection = Database.Equipment.COLUMN_NAME_Equipment_Rental_Cost + " = ?";
+                            break;
+                        case LESS_THAN:
+                            selection = Database.Equipment.COLUMN_NAME_Equipment_Rental_Cost + " < ?";
+                            break;
+                        case GREATER_THAN:
+                            selection = Database.Equipment.COLUMN_NAME_Equipment_Rental_Cost + " > ?";
+                            break;
+                    }
+                    String[] args3 = { searchCrit.getText().toString() };
+                    selectionArgs = args3;
+                    break;
+            }
+            //Call the query
+            Cursor cursor = main.dbRead.query(
+                    Database.Equipment.TABLE_NAME,              // The table to query
+                    allColumnsProjection,                       // The columns to return
+                    selection,                                  // The columns for the WHERE clause
+                    selectionArgs,                              // The values for the WHERE clause
+                    null,                                       // don't group the rows
+                    null,                                       // don't filter by row groups
+                    null                                        // The sort order
+            );
+            redrawTable(cursor, true, true, true, true);
         }
     }
 
@@ -257,5 +410,17 @@ public class Equipment extends Fragment implements View.OnClickListener {
             table.addView(newRow);
         }
         cursor.close();
+    }
+
+    public void setExtraSpinnerToInt(){
+        //Set up the extra search drop down
+        List<String> list = new ArrayList<>();
+        list.add("Equal To");
+        list.add("Less Than");
+        list.add("Greater Than");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_item, list);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        extraSearchDropdown.setAdapter(dataAdapter);
     }
 }

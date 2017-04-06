@@ -3,6 +3,36 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/search_crit"
+            android:layout_width="@dimen/search_width"
+            android:layout_height="@dimen/search_height"
+            android:ems="10"
+            android:inputType="textPersonName" />
+
+        <Spinner
+            android:id="@+id/search_dropdown"
+            android:layout_width="@dimen/search_width"
+            android:layout_height="@dimen/search_height" />
+
+        <Spinner
+            android:id="@+id/extra_search_dropdown"
+            android:layout_width="@dimen/search_width"
+            android:layout_height="@dimen/search_height" />
+
+        <Button
+            android:id="@+id/search"
+            android:layout_width="@dimen/search_width"
+            android:layout_height="@dimen/search_height"
+            android:text="@string/search" />
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
