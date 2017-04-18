@@ -4,6 +4,8 @@
     <dimen name="button_height">60dp</dimen>
     <dimen name="search_width">160dp</dimen>
     <dimen name="search_height">60dp</dimen>
+    <dimen name="classID_width">140dp</dimen>
+    <dimen name="class_table_col_width">140dp</dimen>
     <dimen name="text_height">60dp</dimen>
     <dimen name="text_width">160dp</dimen>
 </resources>

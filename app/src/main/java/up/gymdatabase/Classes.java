@@ -1,5 +1,6 @@
 package up.gymdatabase;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -9,10 +10,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
@@ -31,6 +39,29 @@ public class Classes extends Fragment implements View.OnClickListener {
     Button sortTime;
     Button sortDate;
     Button sortLocation;
+    Button csearch;
+    Button cadd;
+    EditText csearchCrit;
+    EditText newcID;
+    EditText newcName;
+    EditText newcTime;
+    EditText newcDate;
+    EditText newcLoc;
+    Spinner searchcDropdown;
+    Spinner extraSearchcDropdown;
+
+    //Data for the dropdown menus
+    int dropdownSelection;
+    int extraDropdownSelection;
+    final int ID = 0;
+    final int NAME = 1;
+    final int TIME = 2;
+    final int DATE = 3;
+    final int LOC = 4;
+    final int EQUAL_TO = 0;
+    final int LESS_THAN = 1;
+    final int GREATER_THAN = 2;
+
 
     //Get main so I can get the readable database
     MainActivity main1;
@@ -67,7 +98,7 @@ public class Classes extends Fragment implements View.OnClickListener {
      * savedInstanceState - calls the super class
      */
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        title = (TextView) getActivity().findViewById(R.id.ctitle);
+        title = (TextView) getActivity().findViewById(R.id.title);
         table = (TableLayout) getActivity().findViewById(R.id.ctable);
         tableHeader = (TableRow) getActivity().findViewById(R.id.ctable_header);
         sortId = (Button) getActivity().findViewById(R.id.sort_cid);
@@ -80,6 +111,85 @@ public class Classes extends Fragment implements View.OnClickListener {
         sortLocation.setOnClickListener(this);
         sortName = (Button) getActivity().findViewById(R.id.sort_cname);
         sortName.setOnClickListener(this);
+        csearch = (Button) getActivity().findViewById(R.id.csearch);
+        csearch.setOnClickListener(this);
+        cadd = (Button)  getActivity().findViewById(R.id.cadd);
+        cadd.setOnClickListener(this);
+        csearchCrit = (EditText) getActivity().findViewById(R.id.csearch_crit);
+        newcID = (EditText) getActivity().findViewById(R.id.new_cid);
+        newcName = (EditText) getActivity().findViewById(R.id.new_cname);
+        newcTime = (EditText) getActivity().findViewById(R.id.new_ctime);
+        newcDate = (EditText) getActivity().findViewById(R.id.new_cdate);
+        newcLoc = (EditText) getActivity().findViewById(R.id.new_cloc);
+        searchcDropdown = (Spinner) getActivity().findViewById(R.id.search_cdropdown);
+        searchcDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
+                switch (position) {
+                    case ID:
+                        dropdownSelection = ID;
+                        extraSearchcDropdown.setVisibility(View.VISIBLE);
+                        setExtraSpinnerToInt();
+                        break;
+                    case NAME:
+                        dropdownSelection = NAME;
+                        extraSearchcDropdown.setVisibility(View.GONE);
+                        break;
+                    case TIME:
+                        dropdownSelection = TIME;
+                        extraSearchcDropdown.setVisibility(View.VISIBLE);
+                        setExtraSpinnerToInt();
+                        break;
+                    case DATE:
+                        dropdownSelection = DATE;
+                        extraSearchcDropdown.setVisibility(View.VISIBLE);
+                        setExtraSpinnerToInt();
+                        break;
+                    case LOC:
+                        dropdownSelection = LOC;
+                        extraSearchcDropdown.setVisibility(View.VISIBLE);
+                        setExtraSpinnerToInt();
+                        break;
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        extraSearchcDropdown = (Spinner) getActivity().findViewById(R.id.extra_search_cdropdown);
+        extraSearchcDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
+                switch (position){
+                    case EQUAL_TO:
+                        extraDropdownSelection = EQUAL_TO;
+                        break;
+                    case LESS_THAN:
+                        extraDropdownSelection = LESS_THAN;
+                        break;
+                    case GREATER_THAN:
+                        extraDropdownSelection = GREATER_THAN;
+                        break;
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        //Set up the search drop down
+        List<String> list = new ArrayList<>();
+        list.add("ID");
+        list.add("Name");
+        list.add("Time");
+        list.add("Date");
+        list.add("Location");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_item, list);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        searchcDropdown.setAdapter(dataAdapter);
 
         //Set up main
         main1 = (MainActivity) getActivity();
@@ -280,7 +390,107 @@ public class Classes extends Fragment implements View.OnClickListener {
                 redrawTable(cursor, true, true, true, true, true);
                 sortName.setText(R.string.sort_by_cname_asc);
             }
+
+
+    }else if (view == csearch){
+        //Set up the criteria
+        String selection = null;
+        String[] selectionArgs = {""};
+        switch (dropdownSelection){
+            case ID:
+                switch (extraDropdownSelection){
+                    case EQUAL_TO:
+                        selection = Database.Classes.COLUMN_NAME_Class_ID + " = ?";
+                        break;
+                    case LESS_THAN:
+                        selection = Database.Classes.COLUMN_NAME_Class_ID + " < ?";
+                        break;
+                    case GREATER_THAN:
+                        selection = Database.Classes.COLUMN_NAME_Class_ID + " > ?";
+                        break;
+                }
+                selectionArgs[0] = csearchCrit.getText().toString();
+                break;
+            case NAME:
+                selection = Database.Classes.COLUMN_NAME_Class_Name + " = ?";
+                selectionArgs[0] = csearchCrit.getText().toString();
+                break;
+            case TIME:
+                switch (extraDropdownSelection){
+                    case EQUAL_TO:
+                        selection = Database.Classes.COLUMN_NAME_Class_Time + " = ?";
+                        break;
+                    case LESS_THAN:
+                        selection = Database.Classes.COLUMN_NAME_Class_Time + " < ?";
+                        break;
+                    case GREATER_THAN:
+                        selection = Database.Classes.COLUMN_NAME_Class_Time + " > ?";
+                        break;
+                }
+                selectionArgs[0] = csearchCrit.getText().toString();
+                break;
+            case DATE:
+                switch (extraDropdownSelection){
+                    case EQUAL_TO:
+                        selection = Database.Classes.COLUMN_NAME_Class_Date + " = ?";
+                        break;
+                    case LESS_THAN:
+                        selection = Database.Classes.COLUMN_NAME_Class_Date + " < ?";
+                        break;
+                    case GREATER_THAN:
+                        selection = Database.Classes.COLUMN_NAME_Class_Date + " > ?";
+                        break;
+                }
+                selectionArgs[0] = csearchCrit.getText().toString();
+                break;
+            case LOC:
+                switch (extraDropdownSelection){
+                    case EQUAL_TO:
+                        selection = Database.Classes.COLUMN_NAME_Class_Location + " = ?";
+                        break;
+                    case LESS_THAN:
+                        selection = Database.Classes.COLUMN_NAME_Class_Location + " < ?";
+                        break;
+                    case GREATER_THAN:
+                        selection = Database.Classes.COLUMN_NAME_Class_Location + " > ?";
+                        break;
+                }
+                selectionArgs[0] = csearchCrit.getText().toString();
+                break;
         }
+        //Call the query
+        Cursor cursor = main1.dbRead.query(
+                Database.Classes.TABLE_NAME_CLASS,              // The table to query
+                allColumnsProjection1,                       // The columns to return
+                selection,                                  // The columns for the WHERE clause
+                selectionArgs,                              // The values for the WHERE clause
+                null,                                       // don't group the rows
+                null,                                       // don't filter by row groups
+                null                                        // The sort order
+        );
+        redrawTable(cursor, true, true, true, true, true);
+    } else if (view == cadd){
+        //Set the values and add to the database
+        ContentValues values = new ContentValues();
+        values.put(Database.Classes.COLUMN_NAME_Class_ID, newcID.getText().toString());
+        values.put(Database.Classes.COLUMN_NAME_Class_Name, newcName.getText().toString());
+        values.put(Database.Classes.COLUMN_NAME_Class_Time, newcTime.getText().toString());
+        values.put(Database.Classes.COLUMN_NAME_Class_Date, newcDate.getText().toString());
+        values.put(Database.Classes.COLUMN_NAME_Class_Location, newcLoc.getText().toString());
+        main1.dbWrite.insert(Database.Classes.TABLE_NAME_CLASS, null, values);
+        //Update data on screen
+        Cursor cursor = main1.dbRead.query(
+                Database.Classes.TABLE_NAME_CLASS,          // The table to query
+                allColumnsProjection1,                   // The columns to return
+                null,                                   // The columns for the WHERE clause
+                null,                                   // The values for the WHERE clause
+                null,                                   // don't group the rows
+                null,                                   // don't filter by row groups
+                null                                    // The sort order
+        );
+        redrawTable(cursor, true, true, true, true, true);
+
+}
     }
 
         public void redrawTable(Cursor cursor, Boolean needId, Boolean needTime, Boolean needName, Boolean needDate, Boolean needLoc){
@@ -297,23 +507,23 @@ public class Classes extends Fragment implements View.OnClickListener {
                 id.setText("" + idValue);
                 newRow.addView(id);
 
-                TextView time = new TextView(getActivity());
-                String timeValue = cursor.getString(cursor.getColumnIndexOrThrow(Database.Classes.COLUMN_NAME_Class_Time));
-                time.setText(timeValue);
-                newRow.addView(time);
-
                 TextView name = new TextView(getActivity());
-                int nameValue = cursor.getInt(cursor.getColumnIndexOrThrow(Database.Classes.COLUMN_NAME_Class_Name));
-                name.setText("" + nameValue);
+                String timeValue = cursor.getString(cursor.getColumnIndexOrThrow(Database.Classes.COLUMN_NAME_Class_Name));
+                name.setText(timeValue);
                 newRow.addView(name);
 
+                TextView time = new TextView(getActivity());
+                String nameValue = cursor.getString(cursor.getColumnIndexOrThrow(Database.Classes.COLUMN_NAME_Class_Time));
+                time.setText("" + nameValue);
+                newRow.addView(time);
+
                 TextView date = new TextView(getActivity());
-                int dateValue = cursor.getInt(cursor.getColumnIndexOrThrow(Database.Classes.COLUMN_NAME_Class_Date));
+                String dateValue = cursor.getString(cursor.getColumnIndexOrThrow(Database.Classes.COLUMN_NAME_Class_Date));
                 date.setText("" + dateValue);
                 newRow.addView(date);
 
                 TextView loc = new TextView(getActivity());
-                int locValue = cursor.getInt(cursor.getColumnIndexOrThrow(Database.Classes.COLUMN_NAME_Class_Location));
+                String locValue = cursor.getString(cursor.getColumnIndexOrThrow(Database.Classes.COLUMN_NAME_Class_Location));
                 loc.setText("" + locValue);
                 newRow.addView(loc);
                 // add the row to the table layout
@@ -321,6 +531,17 @@ public class Classes extends Fragment implements View.OnClickListener {
             }
             cursor.close();
         }
+
+    public void setExtraSpinnerToInt(){
+        List<String> list = new ArrayList<>();
+        list.add("Equal To");
+        list.add("Less Than");
+        list.add("Greater Than");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_item, list);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        extraSearchcDropdown.setAdapter(dataAdapter);
+    }
 
     }
 
