@@ -18,7 +18,7 @@ import java.io.InputStreamReader;
  */
 public class DatabaseHelper extends SQLiteOpenHelper{
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "Database.db";
 
     //String to create the equipment table as defined in the schema

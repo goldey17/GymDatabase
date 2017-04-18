@@ -170,7 +170,7 @@ public class Staff extends Fragment implements View.OnClickListener {
                 null,                                   // don't filter by row groups
                 null                                    // The sort order
         );
-        //redrawTable(cursor);
+        redrawTable(cursor);
     }
 
 

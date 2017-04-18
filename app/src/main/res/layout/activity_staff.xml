@@ -12,19 +12,17 @@
             android:id="@+id/newID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="3.49"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/staff_id" />
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/newName"
-            android:layout_width="wrap_content"
+            android:layout_width="196dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="7.93"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/name" />
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/newPosition"
@@ -32,8 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/position" />
+            android:inputType="textPersonName" />
 
         <Button
             android:id="@+id/add"
@@ -55,8 +52,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.35"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/search" />
+            android:inputType="textPersonName" />
 
         <Spinner
             android:id="@+id/searchField"
