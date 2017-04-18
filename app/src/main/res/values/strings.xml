@@ -20,4 +20,10 @@
     <string name="sort_by_cost_dsc">Sort by Rental Cost (DESC)</string>
     <string name="search">Search</string>
     <string name="add">Add</string>
+    <string name="number_to_rent">Number To Rent</string>
+    <string name="days_to_rent">Days To Rent</string>
+    <string name="check_quantity">Check Quantity</string>
+    <string name="check_cost">Check Cost</string>
+    <string name="cost">Cost   $</string>
+    <string name="student_id">Student ID</string>
 </resources>

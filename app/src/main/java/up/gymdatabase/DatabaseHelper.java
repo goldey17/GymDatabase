@@ -25,13 +25,32 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     private static final String SQL_CREATE_EQUIPMENT =
             "CREATE TABLE " + Database.Equipment.TABLE_NAME + " (" +
                     Database.Equipment.COLUMN_NAME_Equipment_ID + " INTEGER PRIMARY KEY," +
-                    Database.Equipment.COLUMN_NAME_Equipment_Type + " TEXT," +
+                    Database.Equipment.COLUMN_NAME_Equipment_Type + " TEXT UNIQUE," +
                     Database.Equipment.COLUMN_NAME_Equipment_Quantity + " INTEGER," +
                     Database.Equipment.COLUMN_NAME_Equipment_Rental_Cost + " INTEGER)";
+
+    //String to create the rents table as defined in the schema
+    private static final String SQL_CREATE_RENTS =
+            "CREATE TABLE " + Database.Rents.TABLE_NAME + " (" +
+                    Database.Rents.COLUMN_NAME_Equipment_ID + " INTEGER," +
+                    Database.Rents.COLUMN_NAME_Student_ID + " INTEGER," +
+                    Database.Rents.COLUMN_NAME_Equipment_Quantity + " INTEGER," +
+                    Database.Rents.COLUMN_NAME_Days + " INTEGER," +
+//                    " FOREIGN KEY (" + Database.Rents.COLUMN_NAME_Student_ID + ") REFERENCES " +
+//                    Database.Students.TABLE_NAME + "(" +
+//                    Database.Students.COLUMN_NAME_Student_ID + ")" +
+                    " FOREIGN KEY (" + Database.Rents.COLUMN_NAME_Equipment_ID + ") REFERENCES " +
+                    Database.Equipment.TABLE_NAME + "(" +
+                    Database.Equipment.COLUMN_NAME_Equipment_ID + "))";
+
 
     //String to drop the equipment table
     private static final String SQL_DELETE_EQUIPMENT =
             "DROP TABLE IF EXISTS " + Database.Equipment.TABLE_NAME;
+
+    //String to drop the rents table
+    private static final String SQL_DELETE_RENTS =
+            "DROP TABLE IF EXISTS " + Database.Rents.TABLE_NAME;
 
     //Constructor for the helper, this creates the database
     public DatabaseHelper(Context context) {
@@ -43,12 +62,15 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         //Create the equipment database and add the known data
         db.execSQL(SQL_CREATE_EQUIPMENT);
         addEquipmentToDatabase(db);
+        //Create rents table
+        db.execSQL(SQL_CREATE_RENTS);
     }
 
     // This database is only a cache for online data, so its upgrade policy is
     // to simply to discard the data and start over
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQL_DELETE_EQUIPMENT);
+        db.execSQL(SQL_DELETE_RENTS);
         onCreate(db);
     }
 

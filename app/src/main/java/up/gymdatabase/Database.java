@@ -20,5 +20,13 @@ public final class Database {
         public static final String COLUMN_NAME_Equipment_Rental_Cost = "EquipmentRentalCost";
     }
 
+    /* Inner class that defines the rents table */
+    public static class Rents implements BaseColumns {
+        public static final String TABLE_NAME = "Rents";
+        public static final String COLUMN_NAME_Equipment_ID = "EquipmentID";
+        public static final String COLUMN_NAME_Student_ID = "StudentID";
+        public static final String COLUMN_NAME_Equipment_Quantity = "EquipmentQuantity";
+        public static final String COLUMN_NAME_Days = "Days";
+    }
 
 }

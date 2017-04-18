@@ -9,4 +9,144 @@
         android:layout_height="wrap_content"
         android:text="@string/action_rent_equipment"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+    <LinearLayout
+        android:id="@+id/equip_type_section"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/type_header"
+            android:layout_width="@dimen/text_width"
+            android:layout_height="@dimen/text_height"
+            android:text="@string/equipment_type" />
+
+        <EditText
+            android:id="@+id/equip_type"
+            android:layout_width="@dimen/text_width"
+            android:layout_height="@dimen/text_height"
+            android:ems="10"
+            android:inputType="textPersonName" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/equip_quan_section"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/quan_header"
+            android:layout_width="@dimen/text_width"
+            android:layout_height="@dimen/text_height"
+            android:text="@string/number_to_rent" />
+
+        <NumberPicker
+            android:id="@+id/num_to_rent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/check_quan"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:text="@string/check_quantity" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/equip_days_section"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/days_header"
+            android:layout_width="@dimen/text_width"
+            android:layout_height="@dimen/text_height"
+            android:text="@string/days_to_rent" />
+
+        <NumberPicker
+            android:id="@+id/days_to_rent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cost_section"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/cost_header"
+            android:layout_width="@dimen/text_width"
+            android:layout_height="@dimen/text_height"
+            android:text="@string/cost" />
+
+        <Button
+            android:id="@+id/check_cost"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:text="@string/check_cost" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/rent"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
+        android:text="@string/action_rent_equipment" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:scrollbars="none">
+
+        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/table"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <TableRow
+                android:id="@+id/table_header"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/Column1"
+                    android:layout_width="@dimen/table_col_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/equipment_id"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <TextView
+                    android:id="@+id/Column2"
+                    android:layout_width="@dimen/table_col_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/student_id"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <TextView
+                    android:id="@+id/Column3"
+                    android:layout_width="@dimen/table_col_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/equipment_quantity"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <TextView
+                    android:id="@+id/Column4"
+                    android:layout_width="@dimen/table_col_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/days_to_rent"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
+
 </LinearLayout>

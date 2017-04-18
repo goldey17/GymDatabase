@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * The screen related to the equipment in the gym
- * Created by Jordan Goldey on 4/3/2017.
+ * Created by Jordan Goldey on 4/6/2017.
  */
 public class Equipment extends Fragment implements View.OnClickListener {
     //All the stuff on the screen

@@ -1,7 +1,9 @@
 <resources>
-    <dimen name="table_col_width">180dp</dimen>
-    <dimen name="button_width">180dp</dimen>
+    <dimen name="table_col_width">160dp</dimen>
+    <dimen name="button_width">160dp</dimen>
     <dimen name="button_height">60dp</dimen>
-    <dimen name="search_width">180dp</dimen>
+    <dimen name="search_width">160dp</dimen>
     <dimen name="search_height">60dp</dimen>
+    <dimen name="text_height">60dp</dimen>
+    <dimen name="text_width">160dp</dimen>
 </resources>
