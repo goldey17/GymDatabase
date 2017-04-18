@@ -34,8 +34,6 @@
     <string name="sort_by_cloc_dsc">Sort by Location (DESC)</string>
     <string name="sort_by_cdate_asc">Sort by Date (ASC)</string>
     <string name="sort_by_cdate_dsc">Sort by Date (DESC)</string>
-    <string name="search"> Search </string>
-    <string name="add"> Add </string>
     <string name="class_id">Class ID</string>
     <string name="class_name">Class Name</string>
     <string name="class_time">Class Time</string>
