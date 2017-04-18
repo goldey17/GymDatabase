@@ -2,94 +2,160 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/ctitle"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/action_classes"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
-
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/new_cid"
+            android:layout_width="@dimen/search_width"
+            android:layout_height="@dimen/search_height"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:labelFor="@id/new_cid" />
+        <EditText
+            android:id="@+id/new_cname"
+            android:layout_width="@dimen/search_width"
+            android:layout_height="@dimen/search_height"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:labelFor="@id/new_cname" />
+        <EditText
+            android:id="@+id/new_ctime"
+            android:layout_width="@dimen/search_width"
+            android:layout_height="@dimen/search_height"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:labelFor="@id/new_ctime" />
+        <EditText
+            android:id="@+id/new_cdate"
+            android:layout_width="@dimen/search_width"
+            android:layout_height="@dimen/search_height"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:labelFor="@id/new_cdate" />
+        <EditText
+            android:id="@+id/new_cloc"
+            android:layout_width="@dimen/search_width"
+            android:layout_height="@dimen/search_height"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:labelFor="@id/new_cloc" />
+        <Button
+            android:id="@+id/cadd"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/search_height"
+            android:text="@string/add" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
+        <EditText
+            android:id="@+id/csearch_crit"
+            android:layout_width="@dimen/search_width"
+            android:layout_height="@dimen/search_height"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:labelFor="@id/csearch_crit"/>
+        <Spinner
+            android:id="@+id/search_cdropdown"
+            android:layout_width="@dimen/search_width"
+            android:layout_height="@dimen/search_height" />
+        <Spinner
+            android:id="@+id/extra_search_cdropdown"
+            android:layout_width="@dimen/search_width"
+            android:layout_height="@dimen/search_height" />
         <Button
-            android:id="@+id/sort_cid"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
-            android:text="@string/sort_by_id_dsc" />
-
-        <Button
-            android:id="@+id/sort_cname"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
-            android:text="@string/sort_by_cname_dsc" />
-
-        <Button
-            android:id="@+id/sort_ctime"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
-            android:text="@string/sort_by_time_dsc" />
-
-        <Button
-            android:id="@+id/sort_cdate"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
-            android:text="@string/sort_by_cdate_dsc" />
-
-        <Button
-            android:id="@+id/sort_cloc"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
-            android:text="@string/sort_by_cloc_dsc" />
+            android:id="@+id/csearch"
+            android:layout_width="@dimen/search_width"
+            android:layout_height="@dimen/search_height"
+            android:text="@string/search" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/sort_cid"
+            android:layout_width="@dimen/classID_width"
+            android:layout_height="@dimen/button_height"
+            android:text="@string/sort_by_id_dsc"
+            style="?android:attr/buttonBarButtonStyle"/>
+        <Button
+            android:id="@+id/sort_cname"
+            android:layout_width="@dimen/classID_width"
+            android:layout_height="@dimen/button_height"
+            android:text="@string/sort_by_cname_dsc"
+            style="?android:attr/buttonBarButtonStyle"/>
+        <Button
+            android:id="@+id/sort_ctime"
+            android:layout_width="@dimen/classID_width"
+            android:layout_height="@dimen/button_height"
+            android:text="@string/sort_by_time_dsc"
+            style="?android:attr/buttonBarButtonStyle"/>
+        <Button
+            android:id="@+id/sort_cdate"
+            android:layout_width="@dimen/classID_width"
+            android:layout_height="@dimen/button_height"
+            android:text="@string/sort_by_cdate_dsc"
+            style="?android:attr/buttonBarButtonStyle"/>
+        <Button
+            android:id="@+id/sort_cloc"
+            android:layout_width="@dimen/classID_width"
+            android:layout_height="@dimen/button_height"
+            android:text="@string/sort_by_cloc_dsc"
+            style="?android:attr/buttonBarButtonStyle"/>
+    </LinearLayout>
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="0dp"
         android:scrollbars="none"
         android:layout_weight="1">
         <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id = "@+id/ctable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
             android:padding="5dp">
-
             <TableRow
                 android:id="@+id/ctable_header"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
-
                 <TextView
                     android:id="@+id/Column1"
-                    android:layout_width="@dimen/table_col_width"
+                    android:layout_width="@dimen/class_table_col_width"
                     android:layout_height="wrap_content"
-                    android:text="@string/equipment_id"
+                    android:text="@string/class_id"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
-
                 <TextView
                     android:id="@+id/Column2"
-                    android:layout_width="@dimen/table_col_width"
+                    android:layout_width="@dimen/class_table_col_width"
                     android:layout_height="wrap_content"
-                    android:text="@string/equipment_type"
+                    android:text="@string/class_name"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
-
                 <TextView
                     android:id="@+id/Column3"
-                    android:layout_width="@dimen/table_col_width"
+                    android:layout_width="@dimen/class_table_col_width"
                     android:layout_height="wrap_content"
-                    android:text="@string/equipment_quantity"
+                    android:text="@string/class_time"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
-
                 <TextView
                     android:id="@+id/Column4"
-                    android:layout_width="@dimen/table_col_width"
+                    android:layout_width="@dimen/class_table_col_width"
                     android:layout_height="wrap_content"
-                    android:text="@string/equipment_rental"
+                    android:text="@string/class_date"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+                <TextView
+                    android:id="@+id/Column5"
+                    android:layout_width="@dimen/class_table_col_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/class_location"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
             </TableRow>
         </TableLayout>
