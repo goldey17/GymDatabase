@@ -1,21 +1,27 @@
 package up.gymdatabase;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The screen related to the equipment in the gym
  * Created by Jordan Goldey on 4/3/2017.
  */
-
 public class Equipment extends Fragment implements View.OnClickListener {
     //All the stuff on the screen
     TextView title;
@@ -25,8 +31,28 @@ public class Equipment extends Fragment implements View.OnClickListener {
     Button sortType;
     Button sortQuan;
     Button sortCost;
+    Button search;
+    Button add;
+    EditText searchCrit;
+    EditText newID;
+    EditText newType;
+    EditText newQuan;
+    EditText newCost;
+    Spinner searchDropdown;
+    Spinner extraSearchDropdown;
 
-    //Get main so I can get the readable database
+    //Data for the dropdown menus
+    int dropdownSelection;
+    int extraDropdownSelection;
+    final int ID = 0;
+    final int TYPE = 1;
+    final int QUANTITY = 2;
+    final int RENTAL_COST = 3;
+    final int EQUAL_TO = 0;
+    final int LESS_THAN = 1;
+    final int GREATER_THAN = 2;
+
+    //Get main so I can get the readable and writable database
     MainActivity main;
 
     // Define a projection that gets all columns from the database
@@ -64,11 +90,83 @@ public class Equipment extends Fragment implements View.OnClickListener {
         sortQuan.setOnClickListener(this);
         sortCost = (Button) getActivity().findViewById(R.id.sort_cost);
         sortCost.setOnClickListener(this);
+        search = (Button) getActivity().findViewById(R.id.search);
+        search.setOnClickListener(this);
+        add = (Button)  getActivity().findViewById(R.id.add);
+        add.setOnClickListener(this);
+        searchCrit = (EditText) getActivity().findViewById(R.id.search_crit);
+        newID = (EditText) getActivity().findViewById(R.id.new_id);
+        newType = (EditText) getActivity().findViewById(R.id.new_type);
+        newQuan = (EditText) getActivity().findViewById(R.id.new_quan);
+        newCost = (EditText) getActivity().findViewById(R.id.new_cost);
+        searchDropdown = (Spinner) getActivity().findViewById(R.id.search_dropdown);
+        searchDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
+                switch (position) {
+                    case ID:
+                        dropdownSelection = ID;
+                        extraSearchDropdown.setVisibility(View.VISIBLE);
+                        setExtraSpinnerToInt();
+                        break;
+                    case TYPE:
+                        dropdownSelection = TYPE;
+                        extraSearchDropdown.setVisibility(View.GONE);
+                        break;
+                    case QUANTITY:
+                        dropdownSelection = QUANTITY;
+                        extraSearchDropdown.setVisibility(View.VISIBLE);
+                        setExtraSpinnerToInt();
+                        break;
+                    case RENTAL_COST:
+                        dropdownSelection = RENTAL_COST;
+                        extraSearchDropdown.setVisibility(View.VISIBLE);
+                        setExtraSpinnerToInt();
+                        break;
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        extraSearchDropdown = (Spinner) getActivity().findViewById(R.id.extra_search_dropdown);
+        extraSearchDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
+                switch (position){
+                    case EQUAL_TO:
+                        extraDropdownSelection = EQUAL_TO;
+                        break;
+                    case LESS_THAN:
+                        extraDropdownSelection = LESS_THAN;
+                        break;
+                    case GREATER_THAN:
+                        extraDropdownSelection = GREATER_THAN;
+                        break;
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        //Set up the search drop down
+        List<String> list = new ArrayList<>();
+        list.add("ID");
+        list.add("Type");
+        list.add("Quantity");
+        list.add("Rental Cost");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_item, list);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        searchDropdown.setAdapter(dataAdapter);
 
         //Set up main
         main = (MainActivity) getActivity();
 
-        //Call the query
+        //Call the initial query
         Cursor cursor = main.dbRead.query(
                 Database.Equipment.TABLE_NAME,          // The table to query
                 allColumnsProjection,                   // The columns to return
@@ -78,7 +176,7 @@ public class Equipment extends Fragment implements View.OnClickListener {
                 null,                                   // don't filter by row groups
                 null                                    // The sort order
         );
-        redrawTable(cursor, true, true, true, true);
+        redrawTable(cursor);
     }
 
     @Override
@@ -101,7 +199,7 @@ public class Equipment extends Fragment implements View.OnClickListener {
                         null,                                   // don't filter by row groups
                         sortOrder                               // The sort order
                 );
-                redrawTable(cursor, true, true, true, true);
+                redrawTable(cursor);
                 sortId.setText(R.string.sort_by_id_dsc);
             }else{
                 // How you want the results sorted in the resulting Cursor
@@ -117,7 +215,7 @@ public class Equipment extends Fragment implements View.OnClickListener {
                         null,                                   // don't filter by row groups
                         sortOrder                               // The sort order
                 );
-                redrawTable(cursor, true, true, true, true);
+                redrawTable(cursor);
                 sortId.setText(R.string.sort_by_id_asc);
             }
         }else if(view == sortType){
@@ -135,7 +233,7 @@ public class Equipment extends Fragment implements View.OnClickListener {
                         null,                                   // don't filter by row groups
                         sortOrder                               // The sort order
                 );
-                redrawTable(cursor, true, true, true, true);
+                redrawTable(cursor);
                 sortType.setText(R.string.sort_by_type_dsc);
             }else{
                 // How you want the results sorted in the resulting Cursor
@@ -151,7 +249,7 @@ public class Equipment extends Fragment implements View.OnClickListener {
                         null,                                   // don't filter by row groups
                         sortOrder                               // The sort order
                 );
-                redrawTable(cursor, true, true, true, true);
+                redrawTable(cursor);
                 sortType.setText(R.string.sort_by_type_asc);
             }
         }else if(view == sortQuan){
@@ -169,7 +267,7 @@ public class Equipment extends Fragment implements View.OnClickListener {
                         null,                                   // don't filter by row groups
                         sortOrder                               // The sort order
                 );
-                redrawTable(cursor, true, true, true, true);
+                redrawTable(cursor);
                 sortQuan.setText(R.string.sort_by_quan_dsc);
             }else{
                 // How you want the results sorted in the resulting Cursor
@@ -185,7 +283,7 @@ public class Equipment extends Fragment implements View.OnClickListener {
                         null,                                   // don't filter by row groups
                         sortOrder                               // The sort order
                 );
-                redrawTable(cursor, true, true, true, true);
+                redrawTable(cursor);
                 sortQuan.setText(R.string.sort_by_quan_asc);
             }
         }else if(view == sortCost){
@@ -203,7 +301,7 @@ public class Equipment extends Fragment implements View.OnClickListener {
                         null,                                   // don't filter by row groups
                         sortOrder                               // The sort order
                 );
-                redrawTable(cursor, true, true, true, true);
+                redrawTable(cursor);
                 sortCost.setText(R.string.sort_by_cost_dsc);
             }else{
                 // How you want the results sorted in the resulting Cursor
@@ -219,16 +317,98 @@ public class Equipment extends Fragment implements View.OnClickListener {
                         null,                                   // don't filter by row groups
                         sortOrder                               // The sort order
                 );
-                redrawTable(cursor, true, true, true, true);
+                redrawTable(cursor);
                 sortCost.setText(R.string.sort_by_cost_asc);
             }
+        }else if (view == search){
+            //Set up the criteria
+            String selection = null;
+            String[] selectionArgs = {""};
+            switch (dropdownSelection){
+                case ID:
+                    switch (extraDropdownSelection){
+                        case EQUAL_TO:
+                            selection = Database.Equipment.COLUMN_NAME_Equipment_ID + " = ?";
+                            break;
+                        case LESS_THAN:
+                            selection = Database.Equipment.COLUMN_NAME_Equipment_ID + " < ?";
+                            break;
+                        case GREATER_THAN:
+                            selection = Database.Equipment.COLUMN_NAME_Equipment_ID + " > ?";
+                            break;
+                    }
+                    selectionArgs[0] = searchCrit.getText().toString();
+                    break;
+                case TYPE:
+                    selection = Database.Equipment.COLUMN_NAME_Equipment_Type + " = ?";
+                    selectionArgs[0] = searchCrit.getText().toString();
+                    break;
+                case QUANTITY:
+                    switch (extraDropdownSelection){
+                        case EQUAL_TO:
+                            selection = Database.Equipment.COLUMN_NAME_Equipment_Quantity + " = ?";
+                            break;
+                        case LESS_THAN:
+                            selection = Database.Equipment.COLUMN_NAME_Equipment_Quantity + " < ?";
+                            break;
+                        case GREATER_THAN:
+                            selection = Database.Equipment.COLUMN_NAME_Equipment_Quantity + " > ?";
+                            break;
+                    }
+                    selectionArgs[0] = searchCrit.getText().toString();
+                    break;
+                case RENTAL_COST:
+                    switch (extraDropdownSelection){
+                        case EQUAL_TO:
+                            selection = Database.Equipment.COLUMN_NAME_Equipment_Rental_Cost + " = ?";
+                            break;
+                        case LESS_THAN:
+                            selection = Database.Equipment.COLUMN_NAME_Equipment_Rental_Cost + " < ?";
+                            break;
+                        case GREATER_THAN:
+                            selection = Database.Equipment.COLUMN_NAME_Equipment_Rental_Cost + " > ?";
+                            break;
+                    }
+                    selectionArgs[0] = searchCrit.getText().toString();
+                    break;
+            }
+            //Call the query
+            Cursor cursor = main.dbRead.query(
+                    Database.Equipment.TABLE_NAME,              // The table to query
+                    allColumnsProjection,                       // The columns to return
+                    selection,                                  // The columns for the WHERE clause
+                    selectionArgs,                              // The values for the WHERE clause
+                    null,                                       // don't group the rows
+                    null,                                       // don't filter by row groups
+                    null                                        // The sort order
+            );
+            redrawTable(cursor);
+        } else if (view == add){
+            //Set the values and add to the database
+            ContentValues values = new ContentValues();
+            values.put(Database.Equipment.COLUMN_NAME_Equipment_ID, newID.getText().toString());
+            values.put(Database.Equipment.COLUMN_NAME_Equipment_Type, newType.getText().toString());
+            values.put(Database.Equipment.COLUMN_NAME_Equipment_Quantity, newQuan.getText().toString());
+            values.put(Database.Equipment.COLUMN_NAME_Equipment_Rental_Cost, newCost.getText().toString());
+            main.dbWrite.insert(Database.Equipment.TABLE_NAME, null, values);
+            //Update data on screen
+            Cursor cursor = main.dbRead.query(
+                    Database.Equipment.TABLE_NAME,          // The table to query
+                    allColumnsProjection,                   // The columns to return
+                    null,                                   // The columns for the WHERE clause
+                    null,                                   // The values for the WHERE clause
+                    null,                                   // don't group the rows
+                    null,                                   // don't filter by row groups
+                    null                                    // The sort order
+            );
+            redrawTable(cursor);
         }
     }
 
     /*
      * Method to redraw the table on the screen based on the input provided
      */
-    public void redrawTable(Cursor cursor, Boolean needId, Boolean needType, Boolean needQuan, Boolean needCost){
+    public void redrawTable(Cursor cursor){
         table.removeAllViews();
         table.addView(tableHeader);
 
@@ -239,7 +419,8 @@ public class Equipment extends Fragment implements View.OnClickListener {
             // add views to the row
             TextView id = new TextView(getActivity());
             int idValue = cursor.getInt(cursor.getColumnIndexOrThrow(Database.Equipment.COLUMN_NAME_Equipment_ID));
-            id.setText("" + idValue);
+            String text = Integer.toString(idValue);
+            id.setText(text);
             newRow.addView(id);
             TextView type = new TextView(getActivity());
             String typeValue = cursor.getString(cursor.getColumnIndexOrThrow(Database.Equipment.COLUMN_NAME_Equipment_Type));
@@ -247,15 +428,31 @@ public class Equipment extends Fragment implements View.OnClickListener {
             newRow.addView(type);
             TextView quantity = new TextView(getActivity());
             int quantityValue = cursor.getInt(cursor.getColumnIndexOrThrow(Database.Equipment.COLUMN_NAME_Equipment_Quantity));
-            quantity.setText("" + quantityValue);
+            text = Integer.toString(quantityValue);
+            quantity.setText(text);
             newRow.addView(quantity);
             TextView rental = new TextView(getActivity());
             int rentalValue = cursor.getInt(cursor.getColumnIndexOrThrow(Database.Equipment.COLUMN_NAME_Equipment_Rental_Cost));
-            rental.setText("" + rentalValue);
+            text = Integer.toString(rentalValue);
+            rental.setText(text);
             newRow.addView(rental);
             // add the row to the table layout
             table.addView(newRow);
         }
         cursor.close();
+    }
+
+    /*
+     * Set up the extra search drop down
+     */
+    public void setExtraSpinnerToInt(){
+        List<String> list = new ArrayList<>();
+        list.add("Equal To");
+        list.add("Less Than");
+        list.add("Greater Than");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_item, list);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        extraSearchDropdown.setAdapter(dataAdapter);
     }
 }
