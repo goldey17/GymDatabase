@@ -113,7 +113,7 @@ public class Classes extends Fragment implements View.OnClickListener {
         sortName.setOnClickListener(this);
         csearch = (Button) getActivity().findViewById(R.id.csearch);
         csearch.setOnClickListener(this);
-        cadd = (Button)  getActivity().findViewById(R.id.cadd);
+        cadd = (Button) getActivity().findViewById(R.id.cadd);
         cadd.setOnClickListener(this);
         csearchCrit = (EditText) getActivity().findViewById(R.id.csearch_crit);
         newcID = (EditText) getActivity().findViewById(R.id.new_cid);
@@ -124,7 +124,7 @@ public class Classes extends Fragment implements View.OnClickListener {
         searchcDropdown = (Spinner) getActivity().findViewById(R.id.search_cdropdown);
         searchcDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case ID:
                         dropdownSelection = ID;
@@ -152,6 +152,7 @@ public class Classes extends Fragment implements View.OnClickListener {
                         break;
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -160,8 +161,8 @@ public class Classes extends Fragment implements View.OnClickListener {
         extraSearchcDropdown = (Spinner) getActivity().findViewById(R.id.extra_search_cdropdown);
         extraSearchcDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
-                switch (position){
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
                     case EQUAL_TO:
                         extraDropdownSelection = EQUAL_TO;
                         break;
@@ -173,6 +174,7 @@ public class Classes extends Fragment implements View.OnClickListener {
                         break;
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -198,24 +200,22 @@ public class Classes extends Fragment implements View.OnClickListener {
         Cursor cursor1 = null;
 
 
-
-    cursor1 = main1.dbRead.query(
-            Database.Classes.TABLE_NAME_CLASS,          // The table to query
-            allColumnsProjection1,                   // The columns to return
-            null,                                   // The columns for the WHERE clause
-            null,                                   // The values for the WHERE clause
-            null,                                   // don't group the rows
-            null,                                   // don't filter by row groups
-            null
-    );                                              // The sort order);
-
-
+        cursor1 = main1.dbRead.query(
+                Database.Classes.TABLE_NAME_CLASS,          // The table to query
+                allColumnsProjection1,                   // The columns to return
+                null,                                   // The columns for the WHERE clause
+                null,                                   // The values for the WHERE clause
+                null,                                   // don't group the rows
+                null,                                   // don't filter by row groups
+                null
+        );                                              // The sort order);
 
 
         redrawTable(cursor1, true, true, true, true, true);
 
 
     }
+
     @Override
     public void onClick(View view) {
 
@@ -392,147 +392,147 @@ public class Classes extends Fragment implements View.OnClickListener {
             }
 
 
-    }else if (view == csearch){
-        //Set up the criteria
-        String selection = null;
-        String[] selectionArgs = {""};
-        switch (dropdownSelection){
-            case ID:
-                switch (extraDropdownSelection){
-                    case EQUAL_TO:
-                        selection = Database.Classes.COLUMN_NAME_Class_ID + " = ?";
-                        break;
-                    case LESS_THAN:
-                        selection = Database.Classes.COLUMN_NAME_Class_ID + " < ?";
-                        break;
-                    case GREATER_THAN:
-                        selection = Database.Classes.COLUMN_NAME_Class_ID + " > ?";
-                        break;
-                }
-                selectionArgs[0] = csearchCrit.getText().toString();
-                break;
-            case NAME:
-                selection = Database.Classes.COLUMN_NAME_Class_Name + " = ?";
-                selectionArgs[0] = csearchCrit.getText().toString();
-                break;
-            case TIME:
-                switch (extraDropdownSelection){
-                    case EQUAL_TO:
-                        selection = Database.Classes.COLUMN_NAME_Class_Time + " = ?";
-                        break;
-                    case LESS_THAN:
-                        selection = Database.Classes.COLUMN_NAME_Class_Time + " < ?";
-                        break;
-                    case GREATER_THAN:
-                        selection = Database.Classes.COLUMN_NAME_Class_Time + " > ?";
-                        break;
-                }
-                selectionArgs[0] = csearchCrit.getText().toString();
-                break;
-            case DATE:
-                switch (extraDropdownSelection){
-                    case EQUAL_TO:
-                        selection = Database.Classes.COLUMN_NAME_Class_Date + " = ?";
-                        break;
-                    case LESS_THAN:
-                        selection = Database.Classes.COLUMN_NAME_Class_Date + " < ?";
-                        break;
-                    case GREATER_THAN:
-                        selection = Database.Classes.COLUMN_NAME_Class_Date + " > ?";
-                        break;
-                }
-                selectionArgs[0] = csearchCrit.getText().toString();
-                break;
-            case LOC:
-                switch (extraDropdownSelection){
-                    case EQUAL_TO:
-                        selection = Database.Classes.COLUMN_NAME_Class_Location + " = ?";
-                        break;
-                    case LESS_THAN:
-                        selection = Database.Classes.COLUMN_NAME_Class_Location + " < ?";
-                        break;
-                    case GREATER_THAN:
-                        selection = Database.Classes.COLUMN_NAME_Class_Location + " > ?";
-                        break;
-                }
-                selectionArgs[0] = csearchCrit.getText().toString();
-                break;
-        }
-        //Call the query
-        Cursor cursor = main1.dbRead.query(
-                Database.Classes.TABLE_NAME_CLASS,              // The table to query
-                allColumnsProjection1,                       // The columns to return
-                selection,                                  // The columns for the WHERE clause
-                selectionArgs,                              // The values for the WHERE clause
-                null,                                       // don't group the rows
-                null,                                       // don't filter by row groups
-                null                                        // The sort order
-        );
-        redrawTable(cursor, true, true, true, true, true);
-    } else if (view == cadd){
-        //Set the values and add to the database
-        ContentValues values = new ContentValues();
-        values.put(Database.Classes.COLUMN_NAME_Class_ID, newcID.getText().toString());
-        values.put(Database.Classes.COLUMN_NAME_Class_Name, newcName.getText().toString());
-        values.put(Database.Classes.COLUMN_NAME_Class_Time, newcTime.getText().toString());
-        values.put(Database.Classes.COLUMN_NAME_Class_Date, newcDate.getText().toString());
-        values.put(Database.Classes.COLUMN_NAME_Class_Location, newcLoc.getText().toString());
-        main1.dbWrite.insert(Database.Classes.TABLE_NAME_CLASS, null, values);
-        //Update data on screen
-        Cursor cursor = main1.dbRead.query(
-                Database.Classes.TABLE_NAME_CLASS,          // The table to query
-                allColumnsProjection1,                   // The columns to return
-                null,                                   // The columns for the WHERE clause
-                null,                                   // The values for the WHERE clause
-                null,                                   // don't group the rows
-                null,                                   // don't filter by row groups
-                null                                    // The sort order
-        );
-        redrawTable(cursor, true, true, true, true, true);
+        } else if (view == csearch) {
+            //Set up the criteria
+            String selection = null;
+            String[] selectionArgs = {""};
+            switch (dropdownSelection) {
+                case ID:
+                    switch (extraDropdownSelection) {
+                        case EQUAL_TO:
+                            selection = Database.Classes.COLUMN_NAME_Class_ID + " = ?";
+                            break;
+                        case LESS_THAN:
+                            selection = Database.Classes.COLUMN_NAME_Class_ID + " < ?";
+                            break;
+                        case GREATER_THAN:
+                            selection = Database.Classes.COLUMN_NAME_Class_ID + " > ?";
+                            break;
+                    }
+                    selectionArgs[0] = csearchCrit.getText().toString();
+                    break;
+                case NAME:
+                    selection = Database.Classes.COLUMN_NAME_Class_Name + " = ?";
+                    selectionArgs[0] = csearchCrit.getText().toString();
+                    break;
+                case TIME:
+                    switch (extraDropdownSelection) {
+                        case EQUAL_TO:
+                            selection = Database.Classes.COLUMN_NAME_Class_Time + " = ?";
+                            break;
+                        case LESS_THAN:
+                            selection = Database.Classes.COLUMN_NAME_Class_Time + " < ?";
+                            break;
+                        case GREATER_THAN:
+                            selection = Database.Classes.COLUMN_NAME_Class_Time + " > ?";
+                            break;
+                    }
+                    selectionArgs[0] = csearchCrit.getText().toString();
+                    break;
+                case DATE:
+                    switch (extraDropdownSelection) {
+                        case EQUAL_TO:
+                            selection = Database.Classes.COLUMN_NAME_Class_Date + " = ?";
+                            break;
+                        case LESS_THAN:
+                            selection = Database.Classes.COLUMN_NAME_Class_Date + " < ?";
+                            break;
+                        case GREATER_THAN:
+                            selection = Database.Classes.COLUMN_NAME_Class_Date + " > ?";
+                            break;
+                    }
+                    selectionArgs[0] = csearchCrit.getText().toString();
+                    break;
+                case LOC:
+                    switch (extraDropdownSelection) {
+                        case EQUAL_TO:
+                            selection = Database.Classes.COLUMN_NAME_Class_Location + " = ?";
+                            break;
+                        case LESS_THAN:
+                            selection = Database.Classes.COLUMN_NAME_Class_Location + " < ?";
+                            break;
+                        case GREATER_THAN:
+                            selection = Database.Classes.COLUMN_NAME_Class_Location + " > ?";
+                            break;
+                    }
+                    selectionArgs[0] = csearchCrit.getText().toString();
+                    break;
+            }
+            //Call the query
+            Cursor cursor = main1.dbRead.query(
+                    Database.Classes.TABLE_NAME_CLASS,              // The table to query
+                    allColumnsProjection1,                       // The columns to return
+                    selection,                                  // The columns for the WHERE clause
+                    selectionArgs,                              // The values for the WHERE clause
+                    null,                                       // don't group the rows
+                    null,                                       // don't filter by row groups
+                    null                                        // The sort order
+            );
+            redrawTable(cursor, true, true, true, true, true);
+        } else if (view == cadd) {
+            //Set the values and add to the database
+            ContentValues values = new ContentValues();
+            values.put(Database.Classes.COLUMN_NAME_Class_ID, newcID.getText().toString());
+            values.put(Database.Classes.COLUMN_NAME_Class_Name, newcName.getText().toString());
+            values.put(Database.Classes.COLUMN_NAME_Class_Time, newcTime.getText().toString());
+            values.put(Database.Classes.COLUMN_NAME_Class_Date, newcDate.getText().toString());
+            values.put(Database.Classes.COLUMN_NAME_Class_Location, newcLoc.getText().toString());
+            main1.dbWrite.insert(Database.Classes.TABLE_NAME_CLASS, null, values);
+            //Update data on screen
+            Cursor cursor = main1.dbRead.query(
+                    Database.Classes.TABLE_NAME_CLASS,          // The table to query
+                    allColumnsProjection1,                   // The columns to return
+                    null,                                   // The columns for the WHERE clause
+                    null,                                   // The values for the WHERE clause
+                    null,                                   // don't group the rows
+                    null,                                   // don't filter by row groups
+                    null                                    // The sort order
+            );
+            redrawTable(cursor, true, true, true, true, true);
 
-}
+        }
     }
 
-        public void redrawTable(Cursor cursor, Boolean needId, Boolean needTime, Boolean needName, Boolean needDate, Boolean needLoc){
-            table.removeAllViews();
-            table.addView(tableHeader);
+    public void redrawTable(Cursor cursor, Boolean needId, Boolean needTime, Boolean needName, Boolean needDate, Boolean needLoc) {
+        table.removeAllViews();
+        table.addView(tableHeader);
 
-            //Add the data to the table on the screen
-            while (cursor.moveToNext()){
-                // declare a new row
-                TableRow newRow = new TableRow(getActivity());
-                // add views to the row
-                TextView id = new TextView(getActivity());
-                int idValue = cursor.getInt(cursor.getColumnIndexOrThrow(Database.Classes.COLUMN_NAME_Class_ID));
-                id.setText("" + idValue);
-                newRow.addView(id);
+        //Add the data to the table on the screen
+        while (cursor.moveToNext()) {
+            // declare a new row
+            TableRow newRow = new TableRow(getActivity());
+            // add views to the row
+            TextView id = new TextView(getActivity());
+            int idValue = cursor.getInt(cursor.getColumnIndexOrThrow(Database.Classes.COLUMN_NAME_Class_ID));
+            id.setText("" + idValue);
+            newRow.addView(id);
 
-                TextView name = new TextView(getActivity());
-                String timeValue = cursor.getString(cursor.getColumnIndexOrThrow(Database.Classes.COLUMN_NAME_Class_Name));
-                name.setText(timeValue);
-                newRow.addView(name);
+            TextView name = new TextView(getActivity());
+            String timeValue = cursor.getString(cursor.getColumnIndexOrThrow(Database.Classes.COLUMN_NAME_Class_Name));
+            name.setText(timeValue);
+            newRow.addView(name);
 
-                TextView time = new TextView(getActivity());
-                String nameValue = cursor.getString(cursor.getColumnIndexOrThrow(Database.Classes.COLUMN_NAME_Class_Time));
-                time.setText("" + nameValue);
-                newRow.addView(time);
+            TextView time = new TextView(getActivity());
+            String nameValue = cursor.getString(cursor.getColumnIndexOrThrow(Database.Classes.COLUMN_NAME_Class_Time));
+            time.setText("" + nameValue);
+            newRow.addView(time);
 
-                TextView date = new TextView(getActivity());
-                String dateValue = cursor.getString(cursor.getColumnIndexOrThrow(Database.Classes.COLUMN_NAME_Class_Date));
-                date.setText("" + dateValue);
-                newRow.addView(date);
+            TextView date = new TextView(getActivity());
+            String dateValue = cursor.getString(cursor.getColumnIndexOrThrow(Database.Classes.COLUMN_NAME_Class_Date));
+            date.setText("" + dateValue);
+            newRow.addView(date);
 
-                TextView loc = new TextView(getActivity());
-                String locValue = cursor.getString(cursor.getColumnIndexOrThrow(Database.Classes.COLUMN_NAME_Class_Location));
-                loc.setText("" + locValue);
-                newRow.addView(loc);
-                // add the row to the table layout
-                table.addView(newRow);
-            }
-            cursor.close();
+            TextView loc = new TextView(getActivity());
+            String locValue = cursor.getString(cursor.getColumnIndexOrThrow(Database.Classes.COLUMN_NAME_Class_Location));
+            loc.setText("" + locValue);
+            newRow.addView(loc);
+            // add the row to the table layout
+            table.addView(newRow);
         }
+        cursor.close();
+    }
 
-    public void setExtraSpinnerToInt(){
+    public void setExtraSpinnerToInt() {
         List<String> list = new ArrayList<>();
         list.add("Equal To");
         list.add("Less Than");
@@ -543,5 +543,5 @@ public class Classes extends Fragment implements View.OnClickListener {
         extraSearchcDropdown.setAdapter(dataAdapter);
     }
 
-    }
+}
 

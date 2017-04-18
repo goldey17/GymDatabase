@@ -36,5 +36,11 @@ public final class Database {
         public static final String COLUMN_NAME_Class_Date = "ClassDate";
         public static final String COLUMN_NAME_Class_Location = "ClassLocation";
     }
+    public static class Staff implements BaseColumns {
+        public static final String TABLE_NAME = "Staff";
+        public static final String COLUMN_NAME_Staff_ID = "StaffID";
+        public static final String COLUMN_NAME_Staff_Name = "StaffName";
+        public static final String COLUMN_NAME_Staff_Position = "StaffPosition";
+    }
 
 }
