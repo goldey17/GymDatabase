@@ -28,5 +28,13 @@ public final class Database {
         public static final String COLUMN_NAME_Equipment_Quantity = "EquipmentQuantity";
         public static final String COLUMN_NAME_Days = "Days";
     }
+    public static class Classes implements BaseColumns {
+        public static final String TABLE_NAME_CLASS = "Classes";
+        public static final String COLUMN_NAME_Class_ID = "ClassID";
+        public static final String COLUMN_NAME_Class_Name = "ClassName";
+        public static final String COLUMN_NAME_Class_Time = "ClassTime";
+        public static final String COLUMN_NAME_Class_Date = "ClassDate";
+        public static final String COLUMN_NAME_Class_Location = "ClassLocation";
+    }
 
 }

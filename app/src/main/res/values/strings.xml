@@ -26,4 +26,12 @@
     <string name="check_cost">Check Cost</string>
     <string name="cost">Cost   $</string>
     <string name="student_id">Student ID</string>
+    <string name="sort_by_time_asc">Sort by Time (ASC)</string>
+    <string name="sort_by_time_dsc">Sort by Time (DESC)</string>
+    <string name="sort_by_cname_asc">Sort by Name (ASC)</string>
+    <string name="sort_by_cname_dsc">Sort by Name (DESC)</string>
+    <string name="sort_by_cloc_asc">Sort by Location (ASC)</string>
+    <string name="sort_by_cloc_dsc">Sort by Location (DESC)</string>
+    <string name="sort_by_cdate_asc">Sort by Date (ASC)</string>
+    <string name="sort_by_cdate_dsc">Sort by Date (DESC)</string>
 </resources>

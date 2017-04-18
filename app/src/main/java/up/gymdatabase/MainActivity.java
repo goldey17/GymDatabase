@@ -82,14 +82,14 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.action_classes:
                 // Create fragment and give it an argument specifying the article it should show
-                Classes classes = new Classes();
+                Classes Classes = new Classes();
                 Bundle args2 = new Bundle();
-                classes.setArguments(args2);
+                Classes.setArguments(args2);
 
                 FragmentTransaction transaction2 = getSupportFragmentManager().beginTransaction();
 
                 // Replace whatever is in the fragment_container view with this fragment,
-                transaction2.replace(R.id.fragment_container, classes, "My Frag");
+                transaction2.replace(R.id.fragment_container, Classes, "My Frag");
 
                 // Commit the transaction
                 transaction2.commit();

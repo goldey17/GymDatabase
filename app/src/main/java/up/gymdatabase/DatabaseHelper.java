@@ -44,9 +44,22 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                     Database.Equipment.COLUMN_NAME_Equipment_ID + "))";
 
 
+    private static final String SQL_CREATE_CLASSES =
+            "CREATE TABLE " + Database.Classes.TABLE_NAME_CLASS + " (" +
+                    Database.Classes.COLUMN_NAME_Class_ID + " INTEGER PRIMARY KEY," +
+                    Database.Classes.COLUMN_NAME_Class_Name + " TEXT," +
+                    Database.Classes.COLUMN_NAME_Class_Time + " TIME," +
+                    Database.Classes.COLUMN_NAME_Class_Date + " DATE," +
+                    Database.Classes.COLUMN_NAME_Class_Location + " TEXT)";
+
+
     //String to drop the equipment table
     private static final String SQL_DELETE_EQUIPMENT =
             "DROP TABLE IF EXISTS " + Database.Equipment.TABLE_NAME;
+
+    private static final String SQL_DELETE_CLASSES =
+            "DROP TABLE IF EXISTS " + Database.Classes.TABLE_NAME_CLASS;
+
 
     //String to drop the rents table
     private static final String SQL_DELETE_RENTS =
@@ -61,15 +74,19 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
         //Create the equipment database and add the known data
         db.execSQL(SQL_CREATE_EQUIPMENT);
+        db.execSQL(SQL_CREATE_CLASSES);
         addEquipmentToDatabase(db);
         //Create rents table
         db.execSQL(SQL_CREATE_RENTS);
+        addClassesToDatabase(db);
+
     }
 
     // This database is only a cache for online data, so its upgrade policy is
     // to simply to discard the data and start over
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQL_DELETE_EQUIPMENT);
+        db.execSQL(SQL_DELETE_CLASSES);
         db.execSQL(SQL_DELETE_RENTS);
         onCreate(db);
     }
@@ -97,6 +114,28 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
             // Insert the new row, returning the primary key value of the new row
             long newRowId = db.insert(Database.Equipment.TABLE_NAME, null, values);
+        }
+    }
+
+    public void addClassesToDatabase(SQLiteDatabase db){
+        //Get data from the file
+        String data1 = readFromFile("ClassesDatabaseInfo.txt");
+
+        //Split data based on the commas
+        String comma = "[,]";
+        String[] items = data1.split(comma);
+        //Enter data into the table
+        for(int i = 0; i < items.length; i = i + 5){
+            // Create a new map of values for the entry into the table
+            ContentValues values = new ContentValues();
+            values.put(Database.Classes.COLUMN_NAME_Class_ID, items[i]);
+            values.put(Database.Classes.COLUMN_NAME_Class_Name, items[i + 1]);
+            values.put(Database.Classes.COLUMN_NAME_Class_Time, items[i + 2]);
+            values.put(Database.Classes.COLUMN_NAME_Class_Date, items[i + 3]);
+            values.put(Database.Classes.COLUMN_NAME_Class_Location, items[i + 4]);
+
+            // Insert the new row, returning the primary key value of the new row
+            long newRowId = db.insert(Database.Classes.TABLE_NAME_CLASS, null, values);
         }
     }
 
