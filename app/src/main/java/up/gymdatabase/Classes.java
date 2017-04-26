@@ -49,6 +49,9 @@ public class Classes extends Fragment implements View.OnClickListener {
     EditText newcLoc;
     Spinner searchcDropdown;
     Spinner extraSearchcDropdown;
+    EditText deleteId;
+    Button delete;
+
 
     //Data for the dropdown menus
     int dropdownSelection;
@@ -121,6 +124,11 @@ public class Classes extends Fragment implements View.OnClickListener {
         newcTime = (EditText) getActivity().findViewById(R.id.new_ctime);
         newcDate = (EditText) getActivity().findViewById(R.id.new_cdate);
         newcLoc = (EditText) getActivity().findViewById(R.id.new_cloc);
+
+        deleteId = (EditText) getActivity().findViewById(R.id.old_cid);
+        delete = (Button) getActivity().findViewById(R.id.delete);
+        delete.setOnClickListener(this);
+
         searchcDropdown = (Spinner) getActivity().findViewById(R.id.search_cdropdown);
         searchcDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -416,45 +424,16 @@ public class Classes extends Fragment implements View.OnClickListener {
                     selectionArgs[0] = csearchCrit.getText().toString();
                     break;
                 case TIME:
-                    switch (extraDropdownSelection) {
-                        case EQUAL_TO:
-                            selection = Database.Classes.COLUMN_NAME_Class_Time + " = ?";
-                            break;
-                        case LESS_THAN:
-                            selection = Database.Classes.COLUMN_NAME_Class_Time + " < ?";
-                            break;
-                        case GREATER_THAN:
-                            selection = Database.Classes.COLUMN_NAME_Class_Time + " > ?";
-                            break;
-                    }
+                    selection = Database.Classes.COLUMN_NAME_Class_Time + " = ?";
                     selectionArgs[0] = csearchCrit.getText().toString();
                     break;
+
                 case DATE:
-                    switch (extraDropdownSelection) {
-                        case EQUAL_TO:
-                            selection = Database.Classes.COLUMN_NAME_Class_Date + " = ?";
-                            break;
-                        case LESS_THAN:
-                            selection = Database.Classes.COLUMN_NAME_Class_Date + " < ?";
-                            break;
-                        case GREATER_THAN:
-                            selection = Database.Classes.COLUMN_NAME_Class_Date + " > ?";
-                            break;
-                    }
+                    selection = Database.Classes.COLUMN_NAME_Class_Date + " = ?";
                     selectionArgs[0] = csearchCrit.getText().toString();
                     break;
                 case LOC:
-                    switch (extraDropdownSelection) {
-                        case EQUAL_TO:
-                            selection = Database.Classes.COLUMN_NAME_Class_Location + " = ?";
-                            break;
-                        case LESS_THAN:
-                            selection = Database.Classes.COLUMN_NAME_Class_Location + " < ?";
-                            break;
-                        case GREATER_THAN:
-                            selection = Database.Classes.COLUMN_NAME_Class_Location + " > ?";
-                            break;
-                    }
+                    selection = Database.Classes.COLUMN_NAME_Class_Location + " = ?";
                     selectionArgs[0] = csearchCrit.getText().toString();
                     break;
             }
@@ -490,7 +469,25 @@ public class Classes extends Fragment implements View.OnClickListener {
             );
             redrawTable(cursor, true, true, true, true, true);
 
-        }
+        }else if(view == delete){
+        // Define 'where' part of query.
+        String selection = Database.Classes.COLUMN_NAME_Class_ID + " LIKE ?";
+        // Specify arguments in placeholder order.
+        String[] selectionArgs = { deleteId.getText().toString() };
+        // Issue SQL statement.
+        main1.dbWrite.delete(Database.Classes.TABLE_NAME_CLASS, selection, selectionArgs);
+        //Call the initial query
+        Cursor cursor = main1.dbRead.query(
+                Database.Classes.TABLE_NAME_CLASS,          // The table to query
+                allColumnsProjection1,                   // The columns to return
+                null,                                   // The columns for the WHERE clause
+                null,                                   // The values for the WHERE clause
+                null,                                   // don't group the rows
+                null,                                   // don't filter by row groups
+                null                                    // The sort order
+        );
+        redrawTable(cursor,true, true, true, true, true);
+    }
     }
 
     public void redrawTable(Cursor cursor, Boolean needId, Boolean needTime, Boolean needName, Boolean needDate, Boolean needLoc) {
