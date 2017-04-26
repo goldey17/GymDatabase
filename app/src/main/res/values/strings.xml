@@ -35,7 +35,7 @@
     <string name="sort_by_cdate_dsc">Sort by Date (DESC)</string>
     <string name="search">Search</string>
     <string name="add">Add</string>
-
+    <string name="delete">Delete</string>
     <string name="staff_id">Staff ID</string>
     <string name="name">Name</string>
     <string name="position">Position</string>
