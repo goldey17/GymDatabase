@@ -18,7 +18,7 @@ import java.io.InputStreamReader;
  */
 public class DatabaseHelper extends SQLiteOpenHelper{
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;
     public static final String DATABASE_NAME = "Database.db";
 
     //String to create the equipment table as defined in the schema
@@ -53,12 +53,18 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                     Database.Classes.COLUMN_NAME_Class_Location + " TEXT)";
 
 
-    //String to create the equipment table as defined in the schema
+    //String to create the staff table as defined in the schema
     private static final String SQL_CREATE_STAFF =
             "CREATE TABLE " + Database.Staff.TABLE_NAME + " (" +
                     Database.Staff.COLUMN_NAME_Staff_ID + " INTEGER PRIMARY KEY," +
                     Database.Staff.COLUMN_NAME_Staff_Name + " TEXT," +
                     Database.Staff.COLUMN_NAME_Staff_Position + " TEXT)";
+
+    //String to create the teaches table as defined in the schema
+    private static final String SQL_CREATE_TEACHES =
+            "CREATE TABLE " + Database.Teaches.TABLE_NAME + " (" +
+                    Database.Teaches.COLUMN_NAME_Class_ID + " INTEGER PRIMARY KEY," +
+                    Database.Teaches.COLUMN_NAME_Staff_ID + " INTEGER)";
 
     //String to drop the equipment table
     private static final String SQL_DELETE_EQUIPMENT =
@@ -75,6 +81,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     private static final String SQL_DELETE_RENTS =
             "DROP TABLE IF EXISTS " + Database.Rents.TABLE_NAME;
 
+    //String to drop the staff table
+    private static final String SQL_DELETE_TEACHES =
+            "DROP TABLE IF EXISTS " + Database.Teaches.TABLE_NAME;
+
     //Constructor for the helper, this creates the database
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -87,9 +97,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.execSQL(SQL_CREATE_CLASSES);
         db.execSQL(SQL_CREATE_STAFF);
         db.execSQL(SQL_CREATE_RENTS);
+        db.execSQL(SQL_CREATE_TEACHES);
         addEquipmentToDatabase(db);
         addClassesToDatabase(db);
         addStaffToDatabase(db);
+        addTeachesToDatabase(db);
     }
 
     // This database is only a cache for online data, so its upgrade policy is
@@ -99,6 +111,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.execSQL(SQL_DELETE_CLASSES);
         db.execSQL(SQL_DELETE_RENTS);
         db.execSQL(SQL_DELETE_STAFF);
+        db.execSQL(SQL_DELETE_TEACHES);
         onCreate(db);
     }
 
@@ -169,6 +182,27 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
             // Insert the new row, returning the primary key value of the new row
             long newRowId = db.insert(Database.Staff.TABLE_NAME, null, values);
+        }
+    }
+
+    //Method to add all the equipment to the database from the EquipmentDatabaseInfo.txt file
+    public void addTeachesToDatabase(SQLiteDatabase db){
+        //Get data from the file
+        String data = readFromFile("TeachesDatabaseInfo.txt");
+
+        //Split data based on the commas
+        String comma = "[,]";
+        String[] items = data.split(comma);
+
+        //Enter data into the table
+        for(int i = 0; i < items.length; i = i + 2){
+            // Create a new map of values for the entry into the table
+            ContentValues values = new ContentValues();
+            values.put(Database.Teaches.COLUMN_NAME_Class_ID, items[i]);
+            values.put(Database.Teaches.COLUMN_NAME_Staff_ID, items[i + 1]);
+
+            // Insert the new row, returning the primary key value of the new row
+            long newRowId = db.insert(Database.Teaches.TABLE_NAME, null, values);
         }
     }
 

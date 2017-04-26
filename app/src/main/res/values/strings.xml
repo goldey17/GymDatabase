@@ -6,6 +6,8 @@
     <string name="action_equipment">Equipment</string>
     <string name="action_rent_equipment">Rent Equipment</string>
     <string name="action_sign_up_for_class">Sign-up for a Class</string>
+    <string name="action_teaches">Teaches</string>
+
     <string name="equipment_id">Equipment ID</string>
     <string name="equipment_type">Equipment Type</string>
     <string name="equipment_quantity">Equipment Quantity</string>
@@ -48,4 +50,9 @@
     <string name="class_time">Class Time</string>
     <string name="class_date">Class Date</string>
     <string name="class_location">Class Location</string>
+
+    <string name="sort_by_class_id_asc"> Sort by Class ID (ASC)</string>
+    <string name="sort_by_class_id_dsc"> Sort by Class ID (DESC)</string>
+    <string name="sort_by_staff_id_asc"> Sort by Staff ID (ASC)</string>
+    <string name="sort_by_staff_id_dsc"> Sort by Staff ID (DESC)</string>
 </resources>

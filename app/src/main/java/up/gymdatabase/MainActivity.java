@@ -150,6 +150,20 @@ public class MainActivity extends AppCompatActivity {
                 // Commit the transaction
                 transaction6.commit();
                 break;
+            case R.id.action_teaches:
+                // Create fragment and give it an argument specifying the article it should show
+                Teaches teaches = new Teaches();
+                Bundle args7 = new Bundle();
+                teaches.setArguments(args7);
+
+                FragmentTransaction transaction7 = getSupportFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                transaction7.replace(R.id.fragment_container, teaches, "My Frag");
+
+                // Commit the transaction
+                transaction7.commit();
+                break;
         }
         return true;
     }
