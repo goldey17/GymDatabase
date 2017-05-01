@@ -15,8 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/student_id" />
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/newName"
@@ -24,8 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/name" />
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/newYear"
@@ -33,8 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/year" />
+            android:inputType="textPersonName" />
 
         <Button
             android:id="@+id/add"
@@ -42,6 +39,65 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/add" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/studentIDText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/student_id" />
+
+        <TextView
+            android:id="@+id/studentNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/name" />
+
+        <TextView
+            android:id="@+id/studentYearText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/year" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/searchID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/deleteID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delete" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/deleteStudentText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/student_id" />
     </LinearLayout>
 
     <LinearLayout
@@ -88,7 +144,6 @@
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/sort_by_id_dsc" />
 
         <Button
@@ -96,15 +151,13 @@
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/sort_by_name_dsc" />
 
         <Button
             android:id="@+id/sortYear"
-
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/sort_by_year_dsc" />
 
     </LinearLayout>
@@ -121,25 +174,28 @@
             <TableRow
                 android:id="@+id/header"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/Column1"
                     android:layout_width="260dp"
                     android:layout_height="match_parent"
-                    android:text="@string/student_id" />
+                    android:text="@string/student_id"
+                    android:textAppearance="@android:style/TextAppearance.Material.Large" />
 
                 <TextView
                     android:id="@+id/Column2"
                     android:layout_width="260dp"
                     android:layout_height="match_parent"
-                    android:text="@string/name" />
+                    android:text="@string/name"
+                    android:textAppearance="@android:style/TextAppearance.Material.Large" />
 
                 <TextView
                     android:id="@+id/Column3"
                     android:layout_width="260dp"
                     android:layout_height="match_parent"
-                    android:text="@string/year" />
+                    android:text="@string/year"
+                    android:textAppearance="@android:style/TextAppearance.Material.Large" />
             </TableRow>
 
         </TableLayout>

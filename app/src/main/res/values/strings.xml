@@ -57,4 +57,5 @@
     <string name="sort_by_class_id_dsc"> Sort by Class ID (DESC)</string>
     <string name="sort_by_staff_id_asc"> Sort by Staff ID (ASC)</string>
     <string name="sort_by_staff_id_dsc"> Sort by Staff ID (DESC)</string>
+    <string name="sort_by_year_asc">Sort by Year (ASC)</string>
 </resources>

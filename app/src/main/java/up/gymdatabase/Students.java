@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,10 +33,12 @@ public class Students extends Fragment implements View.OnClickListener {
     Button sortYear;
     Button search;
     Button add;
+    Button deleteID;
     EditText searchBar;
     EditText newID;
     EditText newName;
     EditText newYear;
+    EditText searchID;
     Spinner searchField;
     Spinner searchLimiter;
 
@@ -94,10 +97,13 @@ public class Students extends Fragment implements View.OnClickListener {
         search.setOnClickListener(this);
         add = (Button)  getActivity().findViewById(R.id.add);
         add.setOnClickListener(this);
+        deleteID = (Button) getActivity().findViewById(R.id.deleteID);
+        deleteID.setOnClickListener(this);
         searchBar = (EditText) getActivity().findViewById(R.id.searchBar);
         newID = (EditText) getActivity().findViewById(R.id.newID);
         newName = (EditText) getActivity().findViewById(R.id.newName);
         newYear = (EditText) getActivity().findViewById(R.id.newYear);
+        searchID = (EditText) getActivity().findViewById(R.id.searchID);
         searchField = (Spinner) getActivity().findViewById(R.id.searchField);
         searchField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -170,7 +176,7 @@ public class Students extends Fragment implements View.OnClickListener {
                 null,                                   // don't filter by row groups
                 null                                    // The sort order
         );
-        //redrawTable(cursor);
+        redrawTable(cursor);
     }
 
 
@@ -266,7 +272,7 @@ public class Students extends Fragment implements View.OnClickListener {
                         sortOrder                               // The sort order
                 );
                 redrawTable(cursor);
-                sortYear.setText(R.string.sort_by_position_dsc);
+                sortYear.setText(R.string.sort_by_year_dsc);
             }else{
                 // How you want the results sorted in the resulting Cursor
                 String sortOrder =
@@ -283,7 +289,7 @@ public class Students extends Fragment implements View.OnClickListener {
                         sortOrder                               // The sort order
                 );
                 redrawTable(cursor);
-                sortYear.setText(R.string.sort_by_position_asc);
+                sortYear.setText(R.string.sort_by_year_asc);
             }
         }else if (view == search){
             //Set up the criteria
@@ -341,6 +347,20 @@ public class Students extends Fragment implements View.OnClickListener {
                     null,                                   // don't group the rows
                     null,                                   // don't filter by row groups
                     null                                    // The sort order
+            );
+            redrawTable(cursor);
+        } else if (view == deleteID) {
+            String selection = Database.Students.COLUMN_NAME_Student_ID + " LIKE ?";
+            String[] selectionArgs = {searchID.getText().toString()};
+            main.dbWrite.delete(Database.Students.TABLE_NAME, selection, selectionArgs);
+            Cursor cursor = main.dbRead.query(
+                    Database.Students.TABLE_NAME,
+                    allColumnsProjection,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
             );
             redrawTable(cursor);
         }
