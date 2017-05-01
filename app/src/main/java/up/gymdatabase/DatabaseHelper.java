@@ -18,7 +18,7 @@ import java.io.InputStreamReader;
  */
 public class DatabaseHelper extends SQLiteOpenHelper{
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 6;
     public static final String DATABASE_NAME = "Database.db";
 
     //String to create the equipment table as defined in the schema
@@ -36,9 +36,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                     Database.Rents.COLUMN_NAME_Student_ID + " INTEGER," +
                     Database.Rents.COLUMN_NAME_Equipment_Quantity + " INTEGER," +
                     Database.Rents.COLUMN_NAME_Days + " INTEGER," +
-//                    " FOREIGN KEY (" + Database.Rents.COLUMN_NAME_Student_ID + ") REFERENCES " +
-//                    Database.Students.TABLE_NAME + "(" +
-//                    Database.Students.COLUMN_NAME_Student_ID + ")" +
+                    " FOREIGN KEY (" + Database.Rents.COLUMN_NAME_Student_ID + ") REFERENCES " +
+                    Database.Students.TABLE_NAME + "(" +
+                    Database.Students.COLUMN_NAME_Student_ID + ")" +
                     " FOREIGN KEY (" + Database.Rents.COLUMN_NAME_Equipment_ID + ") REFERENCES " +
                     Database.Equipment.TABLE_NAME + "(" +
                     Database.Equipment.COLUMN_NAME_Equipment_ID + "))";

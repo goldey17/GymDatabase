@@ -22,6 +22,7 @@ public class RentEquipment extends Fragment implements View.OnClickListener {
 
     //All the widgets on the screen
     EditText type;
+    EditText sID;
     NumberPicker quantity;
     NumberPicker days;
     Button checkQuan;
@@ -101,6 +102,7 @@ public class RentEquipment extends Fragment implements View.OnClickListener {
         cost = (TextView) getActivity().findViewById(R.id.cost_header);
         table = (TableLayout) getActivity().findViewById(R.id.table);
         tableHeader = (TableRow) getActivity().findViewById(R.id.table_header);
+        sID = (EditText) getActivity().findViewById(R.id.student_id);
 
         //Set up main
         main = (MainActivity) getActivity();
@@ -201,7 +203,7 @@ public class RentEquipment extends Fragment implements View.OnClickListener {
             //Set the values and add to the database
             ContentValues values = new ContentValues();
             values.put(Database.Rents.COLUMN_NAME_Equipment_ID, equipID);
-            values.put(Database.Rents.COLUMN_NAME_Student_ID, studentID);
+            values.put(Database.Rents.COLUMN_NAME_Student_ID, sID.getText().toString());
             values.put(Database.Rents.COLUMN_NAME_Equipment_Quantity, quantity.getValue());
             values.put(Database.Rents.COLUMN_NAME_Days, days.getValue());
             main.dbWrite.insert(Database.Rents.TABLE_NAME, null, values);
