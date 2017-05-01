@@ -122,20 +122,6 @@ public class MainActivity extends AppCompatActivity {
                 // Commit the transaction
                 transaction4.commit();
                 break;
-            case R.id.action_sign_up_for_class:
-                // Create fragment and give it an argument specifying the article it should show
-                SignUpForClass sign = new SignUpForClass();
-                Bundle args5 = new Bundle();
-                sign.setArguments(args5);
-
-                FragmentTransaction transaction5 = getSupportFragmentManager().beginTransaction();
-
-                // Replace whatever is in the fragment_container view with this fragment,
-                transaction5.replace(R.id.fragment_container, sign, "My Frag");
-
-                // Commit the transaction
-                transaction5.commit();
-                break;
             case R.id.action_staff:
                 // Create fragment and give it an argument specifying the article it should show
                 Staff staff = new Staff();
