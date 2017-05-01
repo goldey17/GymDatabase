@@ -38,6 +38,8 @@ public class Equipment extends Fragment implements View.OnClickListener {
     EditText newType;
     EditText newQuan;
     EditText newCost;
+    EditText deleteId;
+    Button delete;
     Spinner searchDropdown;
     Spinner extraSearchDropdown;
 
@@ -99,6 +101,9 @@ public class Equipment extends Fragment implements View.OnClickListener {
         newType = (EditText) getActivity().findViewById(R.id.new_type);
         newQuan = (EditText) getActivity().findViewById(R.id.new_quan);
         newCost = (EditText) getActivity().findViewById(R.id.new_cost);
+        deleteId = (EditText) getActivity().findViewById(R.id.old_id);
+        delete = (Button) getActivity().findViewById(R.id.delete);
+        delete.setOnClickListener(this);
         searchDropdown = (Spinner) getActivity().findViewById(R.id.search_dropdown);
         searchDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -392,6 +397,24 @@ public class Equipment extends Fragment implements View.OnClickListener {
             values.put(Database.Equipment.COLUMN_NAME_Equipment_Rental_Cost, newCost.getText().toString());
             main.dbWrite.insert(Database.Equipment.TABLE_NAME, null, values);
             //Update data on screen
+            Cursor cursor = main.dbRead.query(
+                    Database.Equipment.TABLE_NAME,          // The table to query
+                    allColumnsProjection,                   // The columns to return
+                    null,                                   // The columns for the WHERE clause
+                    null,                                   // The values for the WHERE clause
+                    null,                                   // don't group the rows
+                    null,                                   // don't filter by row groups
+                    null                                    // The sort order
+            );
+            redrawTable(cursor);
+        }else if(view == delete){
+            // Define 'where' part of query.
+            String selection = Database.Equipment.COLUMN_NAME_Equipment_ID + " LIKE ?";
+            // Specify arguments in placeholder order.
+            String[] selectionArgs = { deleteId.getText().toString() };
+            // Issue SQL statement.
+            main.dbWrite.delete(Database.Equipment.TABLE_NAME, selection, selectionArgs);
+            //Call the initial query
             Cursor cursor = main.dbRead.query(
                     Database.Equipment.TABLE_NAME,          // The table to query
                     allColumnsProjection,                   // The columns to return

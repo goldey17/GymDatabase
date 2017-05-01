@@ -44,6 +44,11 @@ public final class Database {
         public static final String COLUMN_NAME_Staff_Position = "StaffPosition";
     }
 
+    public static class Teaches implements BaseColumns {
+        public static final String TABLE_NAME = "Teaches";
+        public static final String COLUMN_NAME_Class_ID = "ClassID";
+        public static final String COLUMN_NAME_Staff_ID = "StaffID";
+    }
     public static class Students implements BaseColumns {
         public static final String TABLE_NAME = "Students";
         public static final String COLUMN_NAME_Student_Name = "StudentName";

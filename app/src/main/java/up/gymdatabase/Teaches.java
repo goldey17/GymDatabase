@@ -15,38 +15,33 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by goldey17 on 4/3/2017.
+ * Created by laum18 on 4/25/2017.
  */
-
-public class Staff extends Fragment implements View.OnClickListener {
-
+public class Teaches extends Fragment implements View.OnClickListener {
+    //All the stuff on the screen
     TableLayout table;
-    TableRow header;
-    Button sortID;
-    Button sortName;
-    Button sortPos;
+    TableRow tableHeader;
+    Button sortClassId;
+    Button sortStaffID;
     Button search;
     Button add;
     Button delete;
     EditText searchBar;
-    EditText newID;
-    EditText newName;
-    EditText newPos;
-    EditText searchID;
+    EditText newClassID;
+    EditText newStaffID;
+    EditText deleteId;
     Spinner searchField;
-    Spinner searchLimiter;
+    Spinner searchLimit;
 
     //Data for the dropdown menus
     int fieldType;
     int fieldLimit;
-    final int ID = 0;
-    final int NAME = 1;
-    final int POSITION = 2;
+    final int CLASSID = 0;
+    final int STAFFID = 1;
     final int EQUAL_TO = 0;
     final int LESS_THAN = 1;
     final int GREATER_THAN = 2;
@@ -56,70 +51,55 @@ public class Staff extends Fragment implements View.OnClickListener {
 
     // Define a projection that gets all columns from the database
     String[] allColumnsProjection = {
-            Database.Staff.COLUMN_NAME_Staff_ID,
-            Database.Staff.COLUMN_NAME_Staff_Name,
-            Database.Staff.COLUMN_NAME_Staff_Position
+            Database.Teaches.COLUMN_NAME_Class_ID,
+            Database.Teaches.COLUMN_NAME_Staff_ID
     };
 
     @Override
     /*
-     * Method that handles the creation of the screen when first called
-     *
-     * Parameter:
-     * savedInstanceState - calls the super class
+     * Method that handles the creation of the screen when first called, links the layout
      */
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        return inflater.inflate(R.layout.activity_staff, container, false);
+        return inflater.inflate(R.layout.activity_teaches, container, false);
     }
-
 
     @Override
      /*
      * Method that is triggered soon after onCreateView() all view setup is done here
-     *
-     * Parameter:
-     * savedInstanceState - calls the super class
      */
     public void onViewCreated(View view, Bundle savedInstanceState) {
         //setup the widgets on the screen
-        table = (TableLayout) getActivity().findViewById(R.id.table);
-        header = (TableRow) getActivity().findViewById(R.id.header);
-        sortID = (Button) getActivity().findViewById(R.id.sortID);
-        sortID.setOnClickListener(this);
-        sortName = (Button) getActivity().findViewById(R.id.sortName);
-        sortName.setOnClickListener(this);
-        sortPos = (Button) getActivity().findViewById(R.id.sortPosition);
-        sortPos.setOnClickListener(this);
+        table = (TableLayout) getActivity().findViewById(R.id.teachesTable);
+        tableHeader = (TableRow) getActivity().findViewById(R.id.teachesHeader);
+        sortClassId = (Button) getActivity().findViewById(R.id.sortClassID);
+        sortClassId.setOnClickListener(this);
+        sortStaffID = (Button) getActivity().findViewById(R.id.sortStaffID);
+        sortStaffID.setOnClickListener(this);
         search = (Button) getActivity().findViewById(R.id.search);
         search.setOnClickListener(this);
         add = (Button)  getActivity().findViewById(R.id.add);
         add.setOnClickListener(this);
-        delete = (Button) getActivity().findViewById(R.id.deleteID);
+        delete = (Button) getActivity().findViewById(R.id.deleteClassID);
         delete.setOnClickListener(this);
         searchBar = (EditText) getActivity().findViewById(R.id.searchBar);
-        newID = (EditText) getActivity().findViewById(R.id.newID);
-        newName = (EditText) getActivity().findViewById(R.id.newName);
-        newPos = (EditText) getActivity().findViewById(R.id.newPosition);
-        searchID = (EditText) getActivity().findViewById(R.id.searchID);
+        newClassID = (EditText) getActivity().findViewById(R.id.newClassID);
+        newStaffID = (EditText) getActivity().findViewById(R.id.newStaffID);
+        deleteId = (EditText) getActivity().findViewById(R.id.deleteCurID);
         searchField = (Spinner) getActivity().findViewById(R.id.searchField);
         searchField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
                 switch (position) {
-                    case ID:
-                        fieldType = ID;
-                        searchLimiter.setVisibility(View.VISIBLE);
+                    case CLASSID:
+                        fieldType = CLASSID;
+                        searchLimit.setVisibility(View.VISIBLE);
                         setExtraSpinnerToInt();
                         break;
-                    case NAME:
-                        fieldType = NAME;
-                        searchLimiter.setVisibility(View.GONE);
-                        break;
-                    case POSITION:
-                        fieldType = POSITION;
-                        searchLimiter.setVisibility(View.VISIBLE);
+                    case STAFFID:
+                        fieldType = STAFFID;
+                        searchLimit.setVisibility(View.VISIBLE);
                         setExtraSpinnerToInt();
                         break;
                 }
@@ -129,9 +109,8 @@ public class Staff extends Fragment implements View.OnClickListener {
 
             }
         });
-
-        searchLimiter = (Spinner) getActivity().findViewById(R.id.searchLimit);
-        searchLimiter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        searchLimit = (Spinner) getActivity().findViewById(R.id.searchLimit);
+        searchLimit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
                 switch (position){
@@ -154,9 +133,9 @@ public class Staff extends Fragment implements View.OnClickListener {
 
         //Set up the search drop down
         List<String> list = new ArrayList<>();
-        list.add("ID");
-        list.add("Name");
-        list.add("Position");
+        list.add("ClassID");
+        list.add("StaffID");
+
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -167,7 +146,7 @@ public class Staff extends Fragment implements View.OnClickListener {
 
         //Call the initial query
         Cursor cursor = main.dbRead.query(
-                Database.Staff.TABLE_NAME,          // The table to query
+                Database.Teaches.TABLE_NAME,          // The table to query
                 allColumnsProjection,                   // The columns to return
                 null,                                   // The columns for the WHERE clause
                 null,                                   // The values for the WHERE clause
@@ -178,18 +157,19 @@ public class Staff extends Fragment implements View.OnClickListener {
         redrawTable(cursor);
     }
 
-
     @Override
+    /*
+     * Method to handle when the buttons are clicked on the screen
+     */
     public void onClick(View view) {
-        if(view == sortID){
-            if(sortID.getText().equals("Sort by ID (ASC)")){
+        if(view == sortClassId){
+            if(sortClassId.getText().equals("Sort by Class ID (ASC)")){
                 // How you want the results sorted in the resulting Cursor
                 String sortOrder =
-                        Database.Staff.COLUMN_NAME_Staff_ID + " ASC";
-
+                        Database.Teaches.COLUMN_NAME_Class_ID + " ASC";
                 //Call the query
                 Cursor cursor = main.dbRead.query(
-                        Database.Staff.TABLE_NAME,          // The table to query
+                        Database.Teaches.TABLE_NAME,          // The table to query
                         allColumnsProjection,                   // The columns to return
                         null,                                   // The columns for the WHERE clause
                         null,                                   // The values for the WHERE clause
@@ -197,17 +177,15 @@ public class Staff extends Fragment implements View.OnClickListener {
                         null,                                   // don't filter by row groups
                         sortOrder                               // The sort order
                 );
-
                 redrawTable(cursor);
-                sortID.setText(R.string.sort_by_id_dsc);
+                sortClassId.setText(R.string.sort_by_class_id_dsc);
             }else{
                 // How you want the results sorted in the resulting Cursor
                 String sortOrder =
-                        Database.Staff.COLUMN_NAME_Staff_ID + " DESC";
-
+                        Database.Teaches.COLUMN_NAME_Class_ID + " DESC";
                 //Call the query
                 Cursor cursor = main.dbRead.query(
-                        Database.Staff.TABLE_NAME,          // The table to query
+                        Database.Teaches.TABLE_NAME,          // The table to query
                         allColumnsProjection,                   // The columns to return
                         null,                                   // The columns for the WHERE clause
                         null,                                   // The values for the WHERE clause
@@ -216,17 +194,16 @@ public class Staff extends Fragment implements View.OnClickListener {
                         sortOrder                               // The sort order
                 );
                 redrawTable(cursor);
-                sortID.setText(R.string.sort_by_id_asc);
+                sortClassId.setText(R.string.sort_by_class_id_asc);
             }
-        }else if(view == sortName){
-            if(sortName.getText().equals("Sort by Name (ASC)")){
+        }else if(view == sortStaffID){
+            if(sortStaffID.getText().equals("Sort by Staff ID (ASC)")){
                 // How you want the results sorted in the resulting Cursor
                 String sortOrder =
-                        Database.Staff.COLUMN_NAME_Staff_Name + " ASC";
-
+                        Database.Teaches.COLUMN_NAME_Staff_ID + " ASC";
                 //Call the query
                 Cursor cursor = main.dbRead.query(
-                        Database.Staff.TABLE_NAME,          // The table to query
+                        Database.Teaches.TABLE_NAME,          // The table to query
                         allColumnsProjection,                   // The columns to return
                         null,                                   // The columns for the WHERE clause
                         null,                                   // The values for the WHERE clause
@@ -235,15 +212,14 @@ public class Staff extends Fragment implements View.OnClickListener {
                         sortOrder                               // The sort order
                 );
                 redrawTable(cursor);
-                sortName.setText(R.string.sort_by_name_dsc);
+                sortStaffID.setText(R.string.sort_by_staff_id_dsc);
             }else{
                 // How you want the results sorted in the resulting Cursor
                 String sortOrder =
-                        Database.Staff.COLUMN_NAME_Staff_Name + " DESC";
-
+                        Database.Teaches.COLUMN_NAME_Staff_ID + " DESC";
                 //Call the query
                 Cursor cursor = main.dbRead.query(
-                        Database.Staff.TABLE_NAME,          // The table to query
+                        Database.Teaches.TABLE_NAME,          // The table to query
                         allColumnsProjection,                   // The columns to return
                         null,                                   // The columns for the WHERE clause
                         null,                                   // The values for the WHERE clause
@@ -252,75 +228,45 @@ public class Staff extends Fragment implements View.OnClickListener {
                         sortOrder                               // The sort order
                 );
                 redrawTable(cursor);
-                sortName.setText(R.string.sort_by_name_asc);
-            }
-        }else if(view == sortPos){
-            if(sortPos.getText().equals("Sort by Position (ASC)")){
-                // How you want the results sorted in the resulting Cursor
-                String sortOrder =
-                        Database.Staff.COLUMN_NAME_Staff_Position + " ASC";
-
-                //Call the query
-                Cursor cursor = main.dbRead.query(
-                        Database.Staff.TABLE_NAME,          // The table to query
-                        allColumnsProjection,                   // The columns to return
-                        null,                                   // The columns for the WHERE clause
-                        null,                                   // The values for the WHERE clause
-                        null,                                   // don't group the rows
-                        null,                                   // don't filter by row groups
-                        sortOrder                               // The sort order
-                );
-                redrawTable(cursor);
-                sortPos.setText(R.string.sort_by_position_dsc);
-            }else{
-                // How you want the results sorted in the resulting Cursor
-                String sortOrder =
-                        Database.Staff.COLUMN_NAME_Staff_Position + " DESC";
-
-                //Call the query
-                Cursor cursor = main.dbRead.query(
-                        Database.Staff.TABLE_NAME,          // The table to query
-                        allColumnsProjection,                   // The columns to return
-                        null,                                   // The columns for the WHERE clause
-                        null,                                   // The values for the WHERE clause
-                        null,                                   // don't group the rows
-                        null,                                   // don't filter by row groups
-                        sortOrder                               // The sort order
-                );
-                redrawTable(cursor);
-                sortPos.setText(R.string.sort_by_position_asc);
+                sortStaffID.setText(R.string.sort_by_staff_id_asc);
             }
         }else if (view == search){
             //Set up the criteria
             String selection = null;
             String[] selectionArgs = {""};
             switch (fieldType){
-                case ID:
+                case CLASSID:
                     switch (fieldLimit){
                         case EQUAL_TO:
-                            selection = Database.Staff.COLUMN_NAME_Staff_ID + " = ?";
+                            selection = Database.Teaches.COLUMN_NAME_Class_ID + " = ?";
                             break;
                         case LESS_THAN:
-                            selection = Database.Staff.COLUMN_NAME_Staff_ID + " < ?";
+                            selection = Database.Teaches.COLUMN_NAME_Class_ID + " < ?";
                             break;
                         case GREATER_THAN:
-                            selection = Database.Staff.COLUMN_NAME_Staff_ID + " > ?";
+                            selection = Database.Teaches.COLUMN_NAME_Class_ID + " > ?";
                             break;
                     }
                     selectionArgs[0] = searchBar.getText().toString();
                     break;
-                case NAME:
-                    selection = Database.Staff.COLUMN_NAME_Staff_Name + " = ?";
-                    selectionArgs[0] = searchBar.getText().toString();
-                    break;
-                case POSITION:
-                    selection = Database.Staff.COLUMN_NAME_Staff_Position + " = ?";
+                case STAFFID:
+                    switch (fieldLimit){
+                        case EQUAL_TO:
+                            selection = Database.Teaches.COLUMN_NAME_Staff_ID + " = ?";
+                            break;
+                        case LESS_THAN:
+                            selection = Database.Teaches.COLUMN_NAME_Staff_ID + " < ?";
+                            break;
+                        case GREATER_THAN:
+                            selection = Database.Teaches.COLUMN_NAME_Staff_ID + " > ?";
+                            break;
+                    }
                     selectionArgs[0] = searchBar.getText().toString();
                     break;
             }
             //Call the query
             Cursor cursor = main.dbRead.query(
-                    Database.Staff.TABLE_NAME,              // The table to query
+                    Database.Teaches.TABLE_NAME,              // The table to query
                     allColumnsProjection,                       // The columns to return
                     selection,                                  // The columns for the WHERE clause
                     selectionArgs,                              // The values for the WHERE clause
@@ -332,14 +278,13 @@ public class Staff extends Fragment implements View.OnClickListener {
         } else if (view == add){
             //Set the values and add to the database
             ContentValues values = new ContentValues();
-            values.put(Database.Staff.COLUMN_NAME_Staff_ID, newID.getText().toString());
-            values.put(Database.Staff.COLUMN_NAME_Staff_Name, newName.getText().toString());
-            values.put(Database.Staff.COLUMN_NAME_Staff_Position, newPos.getText().toString());
+            values.put(Database.Teaches.COLUMN_NAME_Class_ID, newClassID.getText().toString());
+            values.put(Database.Teaches.COLUMN_NAME_Staff_ID, newStaffID.getText().toString());
 
-            main.dbWrite.insert(Database.Staff.TABLE_NAME, null, values);
+            main.dbWrite.insert(Database.Teaches.TABLE_NAME, null, values);
             //Update data on screen
             Cursor cursor = main.dbRead.query(
-                    Database.Staff.TABLE_NAME,          // The table to query
+                    Database.Teaches.TABLE_NAME,          // The table to query
                     allColumnsProjection,                   // The columns to return
                     null,                                   // The columns for the WHERE clause
                     null,                                   // The values for the WHERE clause
@@ -350,14 +295,14 @@ public class Staff extends Fragment implements View.OnClickListener {
             redrawTable(cursor);
         } else if(view == delete){
             // Define 'where' part of query.
-            String selection = Database.Staff.COLUMN_NAME_Staff_ID + " LIKE ?";
+            String selection = Database.Teaches.COLUMN_NAME_Class_ID + " LIKE ?";
             // Specify arguments in placeholder order.
-            String[] selectionArgs = { searchID.getText().toString() };
+            String[] selectionArgs = { deleteId.getText().toString() };
             // Issue SQL statement.
-            main.dbWrite.delete(Database.Staff.TABLE_NAME, selection, selectionArgs);
+            main.dbWrite.delete(Database.Teaches.TABLE_NAME, selection, selectionArgs);
             //Call the initial query
             Cursor cursor = main.dbRead.query(
-                    Database.Staff.TABLE_NAME,          // The table to query
+                    Database.Teaches.TABLE_NAME,          // The table to query
                     allColumnsProjection,                   // The columns to return
                     null,                                   // The columns for the WHERE clause
                     null,                                   // The values for the WHERE clause
@@ -370,11 +315,11 @@ public class Staff extends Fragment implements View.OnClickListener {
     }
 
     /*
-    * Method to redraw the table on the screen based on the input provided
-    */
+     * Method to redraw the table on the screen based on the input provided
+     */
     public void redrawTable(Cursor cursor){
         table.removeAllViews();
-        table.addView(header);
+        table.addView(tableHeader);
 
         //Add the data to the table on the screen
         while (cursor.moveToNext()){
@@ -382,21 +327,17 @@ public class Staff extends Fragment implements View.OnClickListener {
             TableRow newRow = new TableRow(getActivity());
 
             // add views to the row
-            TextView id = new TextView(getActivity());
-            int idValue = cursor.getInt(cursor.getColumnIndexOrThrow(Database.Staff.COLUMN_NAME_Staff_ID));
+            TextView classId = new TextView(getActivity());
+            int idValue = cursor.getInt(cursor.getColumnIndexOrThrow(Database.Teaches.COLUMN_NAME_Class_ID));
             String text = Integer.toString(idValue);
-            id.setText(text);
-            newRow.addView(id);
+            classId.setText(text);
+            newRow.addView(classId);
 
-            TextView name = new TextView(getActivity());
-            String nameValue = cursor.getString(cursor.getColumnIndexOrThrow(Database.Staff.COLUMN_NAME_Staff_Name));
-            name.setText(nameValue);
-            newRow.addView(name);
-
-            TextView position = new TextView(getActivity());
-            String posValue = cursor.getString(cursor.getColumnIndexOrThrow(Database.Staff.COLUMN_NAME_Staff_Position));
-            position.setText(posValue);
-            newRow.addView(position);
+            TextView staffId = new TextView(getActivity());
+            int staffValue = cursor.getInt(cursor.getColumnIndexOrThrow(Database.Teaches.COLUMN_NAME_Staff_ID));
+            text = Integer.toString(staffValue);
+            staffId.setText(text);
+            newRow.addView(staffId);
 
             // add the row to the table layout
             table.addView(newRow);
@@ -405,8 +346,8 @@ public class Staff extends Fragment implements View.OnClickListener {
     }
 
     /*
-    * Set up the extra search drop down
-    */
+     * Set up the extra search drop down
+     */
     public void setExtraSpinnerToInt(){
         List<String> list = new ArrayList<>();
         list.add("Equal To");
@@ -415,6 +356,6 @@ public class Staff extends Fragment implements View.OnClickListener {
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        searchLimiter.setAdapter(dataAdapter);
+        searchLimit.setAdapter(dataAdapter);
     }
 }
