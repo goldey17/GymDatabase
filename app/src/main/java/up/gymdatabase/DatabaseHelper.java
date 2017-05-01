@@ -18,7 +18,7 @@ import java.io.InputStreamReader;
  */
 public class DatabaseHelper extends SQLiteOpenHelper{
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "Database.db";
 
     //String to create the equipment table as defined in the schema
@@ -60,6 +60,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                     Database.Staff.COLUMN_NAME_Staff_Name + " TEXT," +
                     Database.Staff.COLUMN_NAME_Staff_Position + " TEXT)";
 
+    private static final String SQL_CREATE_STUDENTS =
+            "CREATE TABLE " + Database.Students.TABLE_NAME + " (" +
+                    Database.Students.COLUMN_NAME_Student_Name + " TEXT," +
+                    Database.Students.COLUMN_NAME_Student_Year + " TEXT," +
+                    Database.Students.COLUMN_NAME_Student_ID + " INTEGER PRIMARY KEY)";
+
     //String to drop the equipment table
     private static final String SQL_DELETE_EQUIPMENT =
             "DROP TABLE IF EXISTS " + Database.Equipment.TABLE_NAME;
@@ -70,6 +76,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     //String to drop the staff table
     private static final String SQL_DELETE_STAFF =
             "DROP TABLE IF EXISTS " + Database.Staff.TABLE_NAME;
+
+    private static final String SQL_DELETE_STUDENTS =
+            "DROP TABLE IF EXISTS " + Database.Students.TABLE_NAME;
 
     //String to drop the rents table
     private static final String SQL_DELETE_RENTS =
@@ -86,10 +95,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.execSQL(SQL_CREATE_EQUIPMENT);
         db.execSQL(SQL_CREATE_CLASSES);
         db.execSQL(SQL_CREATE_STAFF);
+        db.execSQL(SQL_CREATE_STUDENTS);
         db.execSQL(SQL_CREATE_RENTS);
         addEquipmentToDatabase(db);
         addClassesToDatabase(db);
         addStaffToDatabase(db);
+        addStudentsToDatabase(db);
     }
 
     // This database is only a cache for online data, so its upgrade policy is
@@ -99,6 +110,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.execSQL(SQL_DELETE_CLASSES);
         db.execSQL(SQL_DELETE_RENTS);
         db.execSQL(SQL_DELETE_STAFF);
+        db.execSQL(SQL_DELETE_STUDENTS);
         onCreate(db);
     }
 
@@ -169,6 +181,27 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
             // Insert the new row, returning the primary key value of the new row
             long newRowId = db.insert(Database.Staff.TABLE_NAME, null, values);
+        }
+    }
+
+    public void addStudentsToDatabase(SQLiteDatabase db) {
+        //Get data from the file
+        String data = readFromFile("StudentsDatabaseInfo.txt");
+
+        //Split data based on commas
+        String comma = "[,]";
+        String[] items = data.split(comma);
+
+        //Enter data into the table
+        for(int i =0; i < items.length; i+=3) {
+            //Create a new map of values for the entry into the table
+            ContentValues values = new ContentValues();
+            values.put(Database.Students.COLUMN_NAME_Student_Name, items[i]);
+            values.put(Database.Students.COLUMN_NAME_Student_Year, items[i+1]);
+            values.put(Database.Students.COLUMN_NAME_Student_ID, items[i+2]);
+
+            //Insert the new row, returning the primary key value of the new row
+            long newRowID = db.insert(Database.Students.TABLE_NAME, null, values);
         }
     }
 

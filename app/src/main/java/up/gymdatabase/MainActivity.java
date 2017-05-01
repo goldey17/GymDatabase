@@ -41,15 +41,15 @@ public class MainActivity extends AppCompatActivity {
             }
 
             // Create a new Fragment to be placed in the activity layout
-            MyAccount account = new MyAccount();
+            Students student = new Students();
 
             // In case this activity was started with special instructions from an
             // Intent, pass the Intent's extras to the fragment as arguments
-            account.setArguments(getIntent().getExtras());
+            student.setArguments(getIntent().getExtras());
 
             // Add the fragment to the 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, account).commit();
+                    .add(R.id.fragment_container, student).commit();
         }
     }
 
@@ -66,9 +66,9 @@ public class MainActivity extends AppCompatActivity {
      */
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_account:
+            case R.id.action_students:
                 // Create fragment and give it an argument specifying the article it should show
-                MyAccount account = new MyAccount();
+                Students account = new Students();
                 Bundle args1 = new Bundle();
                 account.setArguments(args1);
 
